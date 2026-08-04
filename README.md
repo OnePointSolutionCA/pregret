@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pregret
 
-## Getting Started
+Free crowdsourced Regret Score for any product. Time-decayed satisfaction data at 30, 60, and 90 days.
 
-First, run the development server:
+Stack: Next.js 16 (App Router) + Tailwind v4 + Supabase (Postgres/Auth) + Resend + Anthropic API.
+
+## Getting started
 
 ```bash
+cp .env.local.example .env.local   # fill in your keys
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Var | Purpose |
+|-----|---------|
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + server Supabase access |
+| `SUPABASE_SERVICE_ROLE_KEY` | Insert affiliate clicks + run seed jobs |
+| `ANTHROPIC_API_KEY` | Seed Regret Scores via Claude sentiment analysis |
+| `RESEND_API_KEY` / `RESEND_FROM_EMAIL` | Day 30/60/90 check-in emails |
+| `AMAZON_AFFILIATE_TAG_CA` / `AMAZON_AFFILIATE_TAG_US` | Appended to `/go` redirect URLs |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin (SEO, extension callbacks) |
 
-## Learn More
+Without Supabase env vars the site runs in demo mode (homepage renders with fixture data).
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run `supabase/migrations/0001_initial_schema.sql` against your project. It creates:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `products` — canonical product data + aggregated Regret Score
+- `user_products` — per-user ownership + day 30/60/90 ratings
+- `product_alternatives` — "people switched to" recommendations
+- `affiliate_clicks` — outbound click log
+- `recompute_product_regret()` — trigger-driven rollup with day-90 weighted 3×, day-60 2×, day-30 1×
 
-## Deploy on Vercel
+RLS is on for all four tables. Users see only their own `user_products` rows; `products` and `product_alternatives` are world-readable.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/` — hero + featured
+- `/search?q=` — full-text-ish match on name + brand
+- `/product/[slug]` — Regret Score, decay curve, alternatives, JSON-LD
+- `/category/[slug]` — electronics / kitchen / fitness / personal-care
+- `/dashboard` — signed-in user's tracked products + pending check-ins
+- `/dashboard/check-in/[id]` — one-tap 30/60/90 day rating
+- `/go/[productId]?ref=` — affiliate redirect + click log
+- `/api/extension/{lookup,impression,click,dismiss}` — Chrome extension endpoints (Phase 2)
+
+## Deployment
+
+Push to Vercel. Point `pregret.ca` DNS at Vercel via Cloudflare. Run the migration in Supabase before first deploy.
