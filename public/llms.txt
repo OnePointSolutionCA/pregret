@@ -1,0 +1,28 @@
+# Pregret
+
+> Know Before You Regret. Pregret shows the crowdsourced Regret Score (0–100) for any consumer product, built from real owner satisfaction data at day 30, 60, and 90 — not honeymoon reviews from launch week. Free for shoppers across the United States and Canada.
+
+## Product
+
+Pregret tracks a Regret Score (0 = nobody regrets, 100 = everyone regrets) for consumer products across Electronics, Kitchen, Fitness, and Personal Care. Scores are computed from user check-ins at three time points (day 30, 60, 90) with day-90 weighted 3x. When a product has a high Regret Score, Pregret recommends alternatives with lower regret — those are the affiliate links that fund the service.
+
+## Coverage
+
+United States and Canada. Amazon.com and Amazon.ca affiliate integration. All content is English.
+
+## Key routes
+
+- `/` — homepage
+- `/product/{slug}` — individual product page with Regret Score, decay curve, alternatives
+- `/category/{slug}` — category browse (electronics, kitchen, fitness, personal-care)
+- `/search?q=` — product search
+- `/blog` — long-form articles
+- `/about` — mission and methodology
+- `/api/extension/lookup?title=&brand=&asin=` — public JSON endpoint for browser extension integrations
+
+## How the score is computed
+
+For each product:
+- `regret_score = weighted_regret_responses / weighted_total_responses × 100`
+- day 30 responses weight 1x, day 60 weight 2x, day 90 weight 3x
+- a response is "regret" if satisfaction ≤ 2 on a 5-point scale

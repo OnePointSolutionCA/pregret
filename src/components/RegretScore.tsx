@@ -29,7 +29,7 @@ export default function RegretScore({ score, totalRatings, size = "md", showAdvi
       </div>
       <div className="text-center">
         <div className={`text-sm font-semibold ${copy.text}`}>{copy.label}</div>
-        {typeof totalRatings === "number" && (
+        {typeof totalRatings === "number" && totalRatings > 0 && (
           <div className="text-xs text-slate-500">based on {totalRatings.toLocaleString()} ratings</div>
         )}
         {showAdvice && <p className="mt-2 max-w-xs text-sm text-slate-600">{tierAdvice(tier)}</p>}

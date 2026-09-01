@@ -1,6 +1,6 @@
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
-import { serverSupabase, supabaseConfigured } from "@/lib/supabase";
+import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export default async function SearchPage({
 
   let results: Product[] = [];
   if (query && supabaseConfigured) {
-    const supabase = await serverSupabase();
+    const supabase = publicSupabase();
     const { data } = await supabase
       .from("products")
       .select("*")

@@ -3,6 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getAllPosts } from "@/data/blog";
 
+// Blog posts are static markdown — pre-render all 141 at build time, serve from cache forever.
+export const dynamic = "force-static";
+
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
 }
@@ -14,7 +17,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.title,
     description: post.description,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+      languages: { "en-US": `/blog/${post.slug}`, "en-CA": `/blog/${post.slug}`, "en": `/blog/${post.slug}` },
+    },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.description,
+      publishedTime: post.publishedDate,
+      section: post.category,
+    },
   };
 }
 
@@ -39,8 +52,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             headline: post.title,
             description: post.description,
             datePublished: post.publishedDate,
+            inLanguage: ["en-US", "en-CA"],
             author: { "@type": "Organization", name: "Pregret" },
-            publisher: { "@type": "Organization", name: "Pregret", url: "https://pregret.ca" },
+            publisher: { "@type": "Organization", name: "Pregret", url: "https://pregret.vercel.app" },
+            audience: {
+              "@type": "PeopleAudience",
+              geographicArea: [
+                { "@type": "Country", name: "United States" },
+                { "@type": "Country", name: "Canada" },
+              ],
+            },
           }),
         }}
       />

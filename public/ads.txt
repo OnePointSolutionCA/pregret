@@ -1,0 +1,6 @@
+# Pregret ads.txt
+# Add authorized ad sellers here after AdSense/Ezoic/Mediavine approval.
+# Format: <domain>, <publisher account ID>, <account type>, <cert authority ID>
+#
+# Example after AdSense approval (replace pub-XXXX with your real ID):
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

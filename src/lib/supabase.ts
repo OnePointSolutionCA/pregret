@@ -32,3 +32,16 @@ export function serviceSupabase() {
 }
 
 export const supabaseConfigured = Boolean(url && anon);
+
+/**
+ * Cookie-less read-only Supabase client for public pages (home, category,
+ * product, blog, etc.). Using `cookies()` via serverSupabase() opts a page
+ * out of static rendering and forces every request to be dynamic — which
+ * ate our Vercel Fluid Active CPU quota. This client has no cookie access,
+ * so pages using it can be fully cached via ISR (revalidate = N).
+ */
+export function publicSupabase() {
+  return createClient(url, anon, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}

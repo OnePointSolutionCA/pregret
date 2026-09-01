@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" role="img" aria-label="Concept2 RowErg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A2E4A"/>
+      <stop offset="1" stop-color="#0C3A5E"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.15" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#F2A93A" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#F2A93A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="640" fill="url(#g)"/>
+  <rect width="640" height="640" fill="url(#glow)"/>
+  <circle cx="512" cy="120" r="6" fill="#F2A93A"/>
+  <text x="48" y="120" font-family="Poppins, 'Plus Jakarta Sans', system-ui, sans-serif" font-size="18" letter-spacing="4" fill="#FBF7F1" fill-opacity="0.55">
+    FITNESS
+  </text>
+  <text x="48" y="440"
+        font-family="Fraunces, 'Playfair Display', Georgia, serif"
+        font-size="260" font-weight="700" font-style="italic" letter-spacing="-8"
+        fill="#FBF7F1">
+    C
+  </text>
+  <text x="48" y="520" font-family="Poppins, 'Plus Jakarta Sans', system-ui, sans-serif" font-size="26" font-weight="600" fill="#FBF7F1">
+    Concept2
+  </text>
+  <text x="48" y="560" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" fill="#FBF7F1" fill-opacity="0.72">
+    Concept2 RowErg
+  </text>
+</svg>

@@ -19,7 +19,7 @@ export type Product = {
   avg_satisfaction_day60: number | null;
   avg_satisfaction_day90: number | null;
   top_regret_reasons: RegretReason[] | null;
-  external_ids: Record<string, string> | null;
+  external_ids: (Record<string, string> & { description?: string }) | null;
   created_at: string;
   updated_at: string;
 };

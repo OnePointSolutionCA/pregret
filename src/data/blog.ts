@@ -8,7 +8,17 @@ export type BlogPost = {
   body: string;
 };
 
+import { GENERATED_POSTS } from "./blog-generated";
+import { GENERATED_POSTS_V2 } from "./blog-generated-v2";
+import { GENERATED_POSTS_V3 } from "./blog-generated-v3";
+import { GENERATED_POSTS_V4 } from "./blog-generated-v4";
+
 export const POSTS: BlogPost[] = [
+  ...GENERATED_POSTS,
+  ...GENERATED_POSTS_V2,
+  ...GENERATED_POSTS_V3,
+  ...GENERATED_POSTS_V4,
+
   {
     slug: "why-day-90-matters",
     title: "Why Day 90 Matters More Than Launch Day Reviews",
@@ -16,7 +26,7 @@ export const POSTS: BlogPost[] = [
     publishedDate: "2026-08-01",
     category: "How It Works",
     readMins: 4,
-    body: `Every review site has the same blind spot. The five-star reviews flooding Amazon on launch week come from people still riding the dopamine hit of unboxing something new. Nobody asks them how they feel three months later — after the return window closes, the subscription bills stack up, and the battery starts degrading.
+    body: `Whether you shop on Amazon.com or Amazon.ca, Best Buy US or Best Buy Canada, the same review problem exists on both sides of the border. Every review site has the same blind spot. The five-star reviews flooding Amazon on launch week come from people still riding the dopamine hit of unboxing something new. Nobody asks them how they feel three months later — after the return window closes, the subscription bills stack up, and the battery starts degrading.
 
 That's the gap Pregret fills.
 
@@ -55,7 +65,7 @@ A product that scores well on Day 1 and poorly on Day 90 isn't a good product. I
     publishedDate: "2026-07-28",
     category: "Product Insights",
     readMins: 5,
-    body: `Every January, fitness equipment sales spike. By April, most of it is gathering dust. We looked at the fitness products with the highest Regret Scores on Pregret — and the pattern is clear: subscription-locked hardware is where buyer's remorse goes to thrive.
+    body: `These regret rankings come from Pregret owners in the United States and Canada — cross-border shopping data on the fitness products marketed heavily on both Amazon.com and Amazon.ca. Every January, fitness equipment sales spike. By April, most of it is gathering dust. We looked at the fitness products with the highest Regret Scores on Pregret — and the pattern is clear: subscription-locked hardware is where buyer's remorse goes to thrive.
 
 ## 1. Lululemon Studio Mirror — Regret Score: 85
 
@@ -90,7 +100,7 @@ Before you buy fitness equipment, ask yourself: if this company shut down tomorr
     publishedDate: "2026-07-20",
     category: "How It Works",
     readMins: 3,
-    body: `We think product scores should be transparent. Here's exactly how a Regret Score is calculated.
+    body: `This formula is applied identically to every product on Pregret, whether it was purchased in the United States or Canada. We think product scores should be transparent. Here's exactly how a Regret Score is calculated.
 
 ## The inputs
 
@@ -146,7 +156,7 @@ Pregret's structured, time-gated approach eliminates all three. You can't leave 
     publishedDate: "2026-07-15",
     category: "Consumer Trends",
     readMins: 4,
-    body: `There's a new category of product failure that didn't exist ten years ago: perfectly functional hardware that becomes useless because a company killed the subscription service it depends on.
+    body: `This pattern hits shoppers in both the United States and Canada — the failed products cited below shipped to buyers on both sides of the border. There's a new category of product failure that didn't exist ten years ago: perfectly functional hardware that becomes useless because a company killed the subscription service it depends on.
 
 ## The pattern
 
@@ -194,7 +204,7 @@ Buy things that work on their own. Your future self will thank you.`,
     publishedDate: "2026-07-10",
     category: "Product Insights",
     readMins: 4,
-    body: `For every Ninja Creami gathering dust in someone's pantry, there's a Lodge skillet that gets used every single day. Here are the kitchen products with the lowest Regret Scores on Pregret — the ones owners are still happy with at Day 90.
+    body: `Prices below are approximate — Amazon.com and Amazon.ca show slightly different pricing due to exchange rates, but Regret Scores are consistent across US and Canadian owners. For every Ninja Creami gathering dust in someone's pantry, there's a Lodge skillet that gets used every single day. Here are the kitchen products with the lowest Regret Scores on Pregret — the ones owners are still happy with at Day 90.
 
 ## 1. Lodge Cast Iron Skillet 12" — Regret Score: 5
 

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" role="img" aria-label="Thermomix TM6">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF7F1"/>
+      <stop offset="1" stop-color="#F5EFE5"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.15" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#FF6B57" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FF6B57" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="640" fill="url(#g)"/>
+  <rect width="640" height="640" fill="url(#glow)"/>
+  <circle cx="512" cy="120" r="6" fill="#FF6B57"/>
+  <text x="48" y="120" font-family="Poppins, 'Plus Jakarta Sans', system-ui, sans-serif" font-size="18" letter-spacing="4" fill="#0C3A5E" fill-opacity="0.55">
+    KITCHEN
+  </text>
+  <text x="48" y="440"
+        font-family="Fraunces, 'Playfair Display', Georgia, serif"
+        font-size="260" font-weight="700" font-style="italic" letter-spacing="-8"
+        fill="#0C3A5E">
+    V
+  </text>
+  <text x="48" y="520" font-family="Poppins, 'Plus Jakarta Sans', system-ui, sans-serif" font-size="26" font-weight="600" fill="#0C3A5E">
+    Vorwerk
+  </text>
+  <text x="48" y="560" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="22" fill="#0C3A5E" fill-opacity="0.72">
+    Thermomix TM6
+  </text>
+</svg>
