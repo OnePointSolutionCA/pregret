@@ -3,6 +3,8 @@ import { CATEGORY_ORDER } from "@/lib/subcategories";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { POSTS } from "@/data/blog";
 
+export const revalidate = 86400;
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pregret.ca";
 const PRODUCT_HARD_CAP = 49500;
 

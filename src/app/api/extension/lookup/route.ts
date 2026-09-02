@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { serverSupabase, supabaseConfigured } from "@/lib/supabase";
+import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { buildGoUrl } from "@/lib/affiliates";
 import type { Product } from "@/lib/types";
 
@@ -7,6 +7,7 @@ const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
+  "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
 };
 
 export function OPTIONS() {
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ matched: false }, { headers: CORS });
   }
 
-  const supabase = await serverSupabase();
+  const supabase = publicSupabase();
   let match: Product | null = null;
 
   if (asin) {

@@ -3,7 +3,7 @@ import ProductCard from "@/components/ProductCard";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import type { Product } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function SearchPage({
   searchParams,
