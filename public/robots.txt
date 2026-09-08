@@ -30,8 +30,36 @@ User-agent: Google-Extended
 Disallow: /_next/image
 Disallow: /api/
 
+# Bingbot and other crawlers that honour Crawl-delay — slow them down
+# so the 283k-product sitemap doesn't spike serverless invocations.
+User-agent: bingbot
+Disallow: /api/
+Disallow: /_next/image
+Crawl-delay: 5
+
+User-agent: AhrefsBot
+Disallow: /api/
+Disallow: /_next/image
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Disallow: /api/
+Disallow: /_next/image
+Crawl-delay: 10
+
+User-agent: DotBot
+Disallow: /api/
+Disallow: /_next/image
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /api/
+Disallow: /_next/image
+Crawl-delay: 10
+
 # All other bots (Googlebot etc.): allow indexing but block the image
 # optimizer + API so they don't burn Fluid Active CPU.
+# Googlebot ignores Crawl-delay — use Search Console to set crawl rate.
 User-agent: *
 Disallow: /api/
 Disallow: /_next/image

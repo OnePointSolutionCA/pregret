@@ -6,7 +6,7 @@ import { POSTS } from "@/data/blog";
 export const revalidate = 86400;
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pregret.ca";
-const PRODUCT_HARD_CAP = 49500;
+const PRODUCT_HARD_CAP = 10000;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -43,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const { data } = await supabase
         .from("products")
         .select("slug, updated_at")
+        .order("created_at", { ascending: false })
         .range(page * 1000, (page + 1) * 1000 - 1);
       if (!data || data.length === 0) break;
       rows.push(...data);
