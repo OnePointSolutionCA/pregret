@@ -81,6 +81,7 @@ export async function GET(
   }
 
   const res = NextResponse.redirect(finalUrl);
+  res.headers.set("X-Robots-Tag", "noindex, nofollow");
   if (!req.cookies.get("pg_sid")) {
     res.cookies.set("pg_sid", sessionId, { httpOnly: true, sameSite: "lax", maxAge: 60 * 60 * 24 * 365 });
   }

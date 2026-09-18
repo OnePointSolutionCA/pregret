@@ -1,68 +1,81 @@
 # AI crawlers — heavy hitters that were eating our Fluid Active CPU quota.
-# Block them from Next's image optimizer and slow their crawl of everything else.
+# Block them from Next's image optimizer, API, and affiliate redirects.
 
 User-agent: GPTBot
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 Crawl-delay: 10
 
 User-agent: CCBot
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 Crawl-delay: 10
 
 User-agent: ClaudeBot
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 Crawl-delay: 5
 
 User-agent: PerplexityBot
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 Crawl-delay: 5
 
 User-agent: anthropic-ai
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 Crawl-delay: 5
 
 User-agent: Google-Extended
 Disallow: /_next/image
 Disallow: /api/
+Disallow: /go/
 
 # Bingbot and other crawlers that honour Crawl-delay — slow them down
 # so the 283k-product sitemap doesn't spike serverless invocations.
 User-agent: bingbot
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Crawl-delay: 5
 
 User-agent: AhrefsBot
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Crawl-delay: 10
 
 User-agent: SemrushBot
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Crawl-delay: 10
 
 User-agent: DotBot
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Crawl-delay: 10
 
 User-agent: MJ12bot
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Crawl-delay: 10
 
 # All other bots (Googlebot etc.): allow indexing but block the image
-# optimizer + API so they don't burn Fluid Active CPU.
+# optimizer, API, and affiliate redirects so they don't burn CPU or
+# generate fake affiliate clicks that could get the account flagged.
 # Googlebot ignores Crawl-delay — use Search Console to set crawl rate.
 User-agent: *
 Disallow: /api/
 Disallow: /_next/image
+Disallow: /go/
 Allow: /
 
 Sitemap: https://pregret.ca/sitemap.xml
