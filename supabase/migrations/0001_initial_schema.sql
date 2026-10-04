@@ -1,6 +1,7 @@
 -- PreGret initial schema
 
 create extension if not exists "pgcrypto";
+create extension if not exists pg_trgm;
 
 create table if not exists public.products (
   id uuid primary key default gen_random_uuid(),
@@ -25,9 +26,7 @@ create table if not exists public.products (
 
 create index if not exists products_category_idx on public.products (category);
 create index if not exists products_regret_score_idx on public.products (regret_score);
-create index if not exists products_name_trgm_idx on public.products using gin (name gin_trgm_ops);
 
-create extension if not exists pg_trgm;
 
 create table if not exists public.user_products (
   id uuid primary key default gen_random_uuid(),

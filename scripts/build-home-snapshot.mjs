@@ -28,7 +28,7 @@ const db = createClient(url, key, { auth: { persistSession: false, autoRefreshTo
 
 const CARD =
   "id, slug, name, brand, category, image_url, amazon_url, regret_score, would_buy_again_pct, total_ratings, external_ids";
-const SAMPLE = "id, slug, image_url, category, regret_score, reviews:external_ids->>amazon_reviews";
+const SAMPLE = "id, slug, brand, image_url, category, regret_score, reviews:external_ids->>amazon_reviews";
 const SAMPLE_PER_CATEGORY = 400;
 
 const orderBlock = readFileSync(SUBCATS, "utf8").split("export const CATEGORY_ORDER")[1].split("];")[0];
@@ -71,7 +71,15 @@ async function main() {
   }
 
   const all = Object.values(samples).flat().sort((a, b) => reviewsOf(b) - reviewsOf(a));
-  const trendingIds = all.slice(0, 8).map((r) => r.id);
+  const seenBrands = new Set();
+  const trendingIds = [];
+  for (const r of all) {
+    const brand = (r.brand ?? r.slug).toLowerCase();
+    if (seenBrands.has(brand)) continue;
+    seenBrands.add(brand);
+    trendingIds.push(r.id);
+    if (trendingIds.length === 8) break;
+  }
   const trendingRows = await q(db.from("products").select(CARD).in("id", trendingIds), "trending");
   const trending = trendingIds.map((id) => trendingRows.find((r) => r.id === id)).filter(Boolean);
 

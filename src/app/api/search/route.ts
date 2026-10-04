@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
+import { rankSearch, searchFilter } from "@/lib/db";
 import type { Product } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -22,19 +23,18 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(req.nextUrl.searchParams.get("limit") ?? "8", 10) || 8, 20);
   const supabase = publicSupabase();
 
-  // Strip LIKE wildcards and PostgREST filter syntax so input can't alter the .or() filter.
-  const safe = q.replace(/[%_\\(),"]/g, " ").trim();
-  if (!safe) return NextResponse.json({ items: [] });
+  const filter = searchFilter(q);
+  if (!filter) return NextResponse.json({ items: [] });
+  // Fetch a wider pool than shown so ranking has something to choose from.
   const { data, error } = await supabase
     .from("products")
     .select("slug, name, brand, category, image_url, regret_score")
-    .or(`name.ilike.%${safe}%,brand.ilike.%${safe}%`)
-    .order("regret_score", { ascending: false })
-    .limit(limit);
+    .or(filter)
+    .limit(40);
   // Don't let the edge cache hold an empty result for an hour when the DB is having a moment.
   if (error) return NextResponse.json({ items: [] }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
-  const items = ((data as Row[]) ?? []).map((p) => ({
+  const items = rankSearch((data as Row[]) ?? [], q).slice(0, limit).map((p) => ({
     slug: p.slug,
     name: p.name,
     brand: p.brand,

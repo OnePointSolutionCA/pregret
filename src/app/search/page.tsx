@@ -2,28 +2,22 @@ import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
 import { unstable_cache } from "next/cache";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
-import { CARD_COLUMNS, unwrap } from "@/lib/db";
+import { CARD_COLUMNS, rankSearch, searchFilter, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
 
 export const revalidate = 60;
 
 const searchProducts = unstable_cache(
   async (query: string): Promise<Product[]> => {
-    // Strip LIKE wildcards and PostgREST filter syntax so input can't alter the .or() filter.
-    const safe = query.replace(/[%_\\(),"]/g, " ").trim();
-    if (!safe) return [];
+    const filter = searchFilter(query);
+    if (!filter) return [];
     const data = unwrap(
-      await publicSupabase()
-        .from("products")
-        .select(CARD_COLUMNS)
-        .or(`name.ilike.%${safe}%,brand.ilike.%${safe}%`)
-        .order("regret_score", { ascending: false })
-        .limit(50),
+      await publicSupabase().from("products").select(CARD_COLUMNS).or(filter).limit(50),
       "search",
     );
-    return (data as unknown as Product[]) ?? [];
+    return rankSearch((data as unknown as Product[]) ?? [], query);
   },
-  ["search-v2"],
+  ["search-v3"],
   { revalidate: 86400 },
 );
 

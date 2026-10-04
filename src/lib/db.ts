@@ -7,6 +7,21 @@ export const CARD_COLUMNS =
 
 const isBuild = process.env.NEXT_PHASE === "phase-production-build";
 
+// Search must not ORDER BY in SQL: for common terms ("black", "lego") Postgres walks the
+// regret_score index across all 283k rows and hits the anon timeout. Let the trigram
+// indexes find matches, then rank here: brand hits first, then most regretted.
+export function rankSearch<T extends { brand: string | null; regret_score: number }>(rows: T[], query: string): T[] {
+  const q = query.toLowerCase();
+  const brandHit = (r: T) => ((r.brand ?? "").toLowerCase().includes(q) ? 0 : 1);
+  return [...rows].sort((a, b) => brandHit(a) - brandHit(b) || b.regret_score - a.regret_score);
+}
+
+export function searchFilter(query: string): string | null {
+  // Strip LIKE wildcards and PostgREST filter syntax so input can't alter the .or() filter.
+  const safe = query.replace(/[%_\\(),"]/g, " ").trim();
+  return safe ? `name.ilike.%${safe}%,brand.ilike.%${safe}%` : null;
+}
+
 type Result<T> = { data: T | null; error: { message?: string } | null };
 
 // Throw on DB failure instead of rendering an empty page: Next then keeps serving the last
