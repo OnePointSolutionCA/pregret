@@ -1,16 +1,21 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import ProductCard from "@/components/ProductCard";
 import SortSelect, { type SortKey } from "@/components/SortSelect";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
+import { CARD_COLUMNS, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
 import {
+  type Category,
   categoryFromSlug,
   SUBCATEGORIES,
   subcategoryLabel,
 } from "@/lib/subcategories";
 
 export const revalidate = 3600;
+
+const DAY = 86400;
 
 type SortConf = { column: keyof Product; ascending: boolean };
 const SORT_MAP: Record<SortKey, SortConf> = {
@@ -39,6 +44,50 @@ const STAR_LABELS: Record<StarFilter, string> = {
 };
 
 const PAGE_SIZE = 60;
+
+// searchParams make this page render per request, so the DB results themselves are cached
+// (keyed by the args) for a day. A failed refresh throws and the stale entry keeps serving.
+const getCategoryProducts = unstable_cache(
+  async (
+    cat: Category,
+    sub: string | null,
+    brand: string | null,
+    score: ScoreFilter | null,
+    stars: StarFilter | null,
+    sort: SortKey,
+  ): Promise<Product[]> => {
+    const { column, ascending } = SORT_MAP[sort];
+    let q = publicSupabase().from("products").select(CARD_COLUMNS).eq("category", cat);
+    if (sub) q = q.eq("external_ids->>sub", sub);
+    if (brand) q = q.eq("brand", brand);
+    if (score === "safe")   q = q.lte("regret_score", 30);
+    if (score === "mixed")  q = q.gt("regret_score", 30).lte("regret_score", 60);
+    if (score === "regret") q = q.gt("regret_score", 60);
+    if (stars === "4plus") q = q.gte("external_ids->>amazon_stars", "4");
+    if (stars === "3plus") q = q.gte("external_ids->>amazon_stars", "3");
+    const data = unwrap(await q.order(column, { ascending }).limit(PAGE_SIZE), "category products");
+    return (data as unknown as Product[]) ?? [];
+  },
+  ["category-products-v2"],
+  { revalidate: DAY },
+);
+
+const getTopBrands = unstable_cache(
+  async (cat: Category, sub: string | null): Promise<string[]> => {
+    let q = publicSupabase().from("products").select("brand").eq("category", cat);
+    if (sub) q = q.eq("external_ids->>sub", sub);
+    const rows = unwrap(await q.limit(1500), "category brands") ?? [];
+    const counts: Record<string, number> = {};
+    for (const r of rows as { brand: string | null }[]) {
+      const b = (r.brand ?? "").trim();
+      if (!b || b.length < 2 || b === "Unbranded") continue;
+      counts[b] = (counts[b] ?? 0) + 1;
+    }
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([b]) => b);
+  },
+  ["category-brands-v2"],
+  { revalidate: DAY },
+);
 
 export async function generateMetadata({ params, searchParams }: {
   params: Promise<{ slug: string }>;
@@ -76,7 +125,6 @@ export default async function CategoryPage({ params, searchParams }: {
   const cat = categoryFromSlug(slug);
   if (!cat) notFound();
   const sort = normalizeSort(sortParam);
-  const { column, ascending } = SORT_MAP[sort];
 
   const score: ScoreFilter | null =
     scoreParam === "safe" || scoreParam === "mixed" || scoreParam === "regret" ? scoreParam : null;
@@ -88,33 +136,10 @@ export default async function CategoryPage({ params, searchParams }: {
   let topBrands: string[] = [];
 
   if (supabaseConfigured) {
-    const supabase = publicSupabase();
-
-    // Main product query — applies all filters at the DB level and caps at PAGE_SIZE.
-    let q = supabase.from("products").select("*").eq("category", cat);
-    if (sub) q = q.eq("external_ids->>sub", sub);
-    if (brandFilter) q = q.eq("brand", brandFilter);
-    if (score === "safe")   q = q.lte("regret_score", 30);
-    if (score === "mixed")  q = q.gt("regret_score", 30).lte("regret_score", 60);
-    if (score === "regret") q = q.gt("regret_score", 60);
-    if (starsFilter === "4plus") q = q.gte("external_ids->>amazon_stars", "4");
-    if (starsFilter === "3plus") q = q.gte("external_ids->>amazon_stars", "3");
-    const { data } = await q.order(column, { ascending }).limit(PAGE_SIZE);
-    products = (data as Product[]) ?? [];
-
-    // Lightweight brand aggregation — fetches brand-only rows for the category (respects sub filter)
-    // Kept tiny by selecting just `brand`. Category limit 1500 rows is enough to surface top brands
-    // even in Electronics (which is our biggest bucket).
-    let bq = supabase.from("products").select("brand").eq("category", cat);
-    if (sub) bq = bq.eq("external_ids->>sub", sub);
-    const { data: brandRows } = await bq.limit(1500);
-    const counts: Record<string, number> = {};
-    for (const r of (brandRows ?? []) as { brand: string | null }[]) {
-      const b = (r.brand ?? "").trim();
-      if (!b || b.length < 2 || b === "Unbranded") continue;
-      counts[b] = (counts[b] ?? 0) + 1;
-    }
-    topBrands = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([b]) => b);
+    [products, topBrands] = await Promise.all([
+      getCategoryProducts(cat, sub ?? null, brandFilter, score, starsFilter, sort),
+      getTopBrands(cat, sub ?? null),
+    ]);
   }
 
   // Subcategory pills — surface every sub the taxonomy defines for this category

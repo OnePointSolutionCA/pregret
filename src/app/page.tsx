@@ -4,88 +4,19 @@ import RegretScore from "@/components/RegretScore";
 import HeroMosaic from "@/components/HeroMosaic";
 import CategoryTile from "@/components/CategoryTile";
 import ProductRail from "@/components/ProductRail";
-import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { CATEGORY_ORDER } from "@/lib/subcategories";
-import { DEMO_PRODUCTS } from "@/lib/demo";
+import snapshot from "@/data/home-snapshot.json";
 import type { Product } from "@/lib/types";
 
-// ISR: revalidate the whole homepage every hour. The Supabase queries below
-// (regret/loved/newest/trending/all-for-category-hero) were previously running
-// on every visit and were a major Fluid Active CPU sink on Vercel.
-export const revalidate = 3600;
+// No DB calls here: rails + images come from a snapshot built at deploy time
+// (scripts/build-home-snapshot.mjs). The old hourly 15k-row scan blew the Supabase egress quota.
+const { rails, categoryHero } = snapshot as unknown as {
+  rails: Record<"trending" | "mostRegret" | "mostLoved" | "newest", Product[]>;
+  categoryHero: Record<string, string>;
+};
 
-async function loadHomeData() {
-  if (!supabaseConfigured) {
-    return {
-      mostRegret: DEMO_PRODUCTS,
-      mostLoved: DEMO_PRODUCTS,
-      newest: DEMO_PRODUCTS,
-      trending: DEMO_PRODUCTS,
-      categoryHero: {} as Record<string, { image: string | null; count: number }>,
-    };
-  }
-  const supabase = publicSupabase();
-  const [regret, loved, latest, trending, all] = await Promise.all([
-    supabase.from("products").select("*").order("regret_score", { ascending: false }).limit(8),
-    supabase.from("products").select("*").order("would_buy_again_pct", { ascending: false }).limit(8),
-    supabase.from("products").select("*").order("created_at", { ascending: false }).limit(8),
-    // Trending = most-reviewed on Amazon (proxy for real popularity). Not-null image + moderate regret to avoid junk-tier surfacing.
-    supabase
-      .from("products")
-      .select("*")
-      .not("image_url", "is", null)
-      .gte("external_ids->>amazon_reviews", "5000")
-      .order("external_ids->>amazon_reviews", { ascending: false })
-      .limit(8),
-    (async () => {
-      type Row = Pick<Product, "category" | "image_url" | "regret_score" | "external_ids">;
-      const rows: Row[] = [];
-      for (let p = 0; p < 15; p++) {
-        const { data } = await supabase
-          .from("products")
-          .select("category, image_url, regret_score, external_ids")
-          .range(p * 1000, (p + 1) * 1000 - 1);
-        if (!data || data.length === 0) break;
-        rows.push(...(data as Row[]));
-        if (data.length < 1000) break;
-      }
-      return { data: rows };
-    })(),
-  ]);
-
-  // Pick a hero image per category — prefer an iconic, popular product (high Amazon review count)
-  // with a moderate-to-high regret score (not extreme junk, not obscure). Falls back to any image.
-  type Row = Pick<Product, "category" | "image_url" | "regret_score" | "external_ids">;
-  const rows = (all.data as Row[]) ?? [];
-  const byCat: Record<string, { image: string | null; count: number; bestScore: number }> = {};
-  for (const r of rows) {
-    if (!r.category) continue;
-    const b = (byCat[r.category] ??= { image: null, count: 0, bestScore: -1 });
-    b.count += 1;
-    if (!r.image_url) continue;
-    // Score = review count × relevance-window (regret 30-70 preferred). Junk (regret 90+) and boring (regret <20) rank low.
-    // Curated products with no review data get a baseline of 500 so their image still gets picked when no Kaggle product exists in that category.
-    const reviews = parseInt((r.external_ids as { amazon_reviews?: string } | null)?.amazon_reviews ?? "0", 10) || 500;
-    const rs = r.regret_score;
-    const relevance = rs >= 30 && rs <= 70 ? 1 : rs > 70 ? 0.4 : 0.7;
-    const score = reviews * relevance;
-    if (score > b.bestScore) {
-      b.image = r.image_url;
-      b.bestScore = score;
-    }
-  }
-
-  return {
-    mostRegret: (regret.data as Product[]) ?? [],
-    mostLoved: (loved.data as Product[]) ?? [],
-    newest: (latest.data as Product[]) ?? [],
-    trending: (trending.data as Product[]) ?? [],
-    categoryHero: byCat,
-  };
-}
-
-export default async function Home() {
-  const { mostRegret, mostLoved, newest, trending, categoryHero } = await loadHomeData();
+export default function Home() {
+  const { mostRegret, mostLoved, newest, trending } = rails;
 
   return (
     <div>
@@ -144,18 +75,15 @@ export default async function Home() {
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {CATEGORY_ORDER.map((c, i) => {
-            const bucket = categoryHero[c.label] ?? { image: null, count: 0 };
-            return (
-              <CategoryTile
-                key={c.slug}
-                categorySlug={c.slug}
-                categoryLabel={c.label}
-                heroImage={bucket.image}
-                badge={i < 3 && bucket.count >= 15 ? "Popular" : undefined}
-              />
-            );
-          })}
+          {CATEGORY_ORDER.map((c, i) => (
+            <CategoryTile
+              key={c.slug}
+              categorySlug={c.slug}
+              categoryLabel={c.label}
+              heroImage={categoryHero[c.label] ?? null}
+              badge={i < 3 ? "Popular" : undefined}
+            />
+          ))}
         </div>
       </section>
 

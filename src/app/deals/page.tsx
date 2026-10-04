@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import ProductCard from "@/components/ProductCard";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
+import { CARD_COLUMNS, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Deals — Safest buys with 4★+ ratings",
@@ -16,15 +17,18 @@ export default async function DealsPage() {
   let products: Product[] = [];
   if (supabaseConfigured) {
     const supabase = publicSupabase();
-    const { data } = await supabase
-      .from("products")
-      .select("*")
-      .lte("regret_score", 30)
-      .gte("external_ids->>amazon_stars", "4.4")
-      .not("image_url", "is", null)
-      .order("regret_score", { ascending: true })
-      .limit(60);
-    products = (data as Product[]) ?? [];
+    const data = unwrap(
+      await supabase
+        .from("products")
+        .select(CARD_COLUMNS)
+        .lte("regret_score", 30)
+        .gte("external_ids->>amazon_stars", "4.4")
+        .not("image_url", "is", null)
+        .order("regret_score", { ascending: true })
+        .limit(60),
+      "deals",
+    );
+    products = (data as unknown as Product[]) ?? [];
   }
 
   return (
@@ -37,7 +41,7 @@ export default async function DealsPage() {
           Safest buys, top-rated
         </h1>
         <p className="mt-2 text-base text-[var(--ink-2)] sm:mt-3 sm:text-lg">
-          Products with the lowest regret scores and 4.4★+ ratings from real owners. Updated hourly.
+          Products with the lowest regret scores and 4.4★+ ratings from real owners. Updated daily.
         </p>
       </div>
 

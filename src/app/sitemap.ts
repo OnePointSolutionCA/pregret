@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORY_ORDER } from "@/lib/subcategories";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
+import { unwrap } from "@/lib/db";
 import { POSTS } from "@/data/blog";
 
 export const revalidate = 86400;
@@ -40,11 +41,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const rows: { slug: string; updated_at?: string }[] = [];
     for (let page = 0; page < 60; page++) {
       if (rows.length >= PRODUCT_HARD_CAP) break;
-      const { data } = await supabase
-        .from("products")
-        .select("slug, updated_at")
-        .order("created_at", { ascending: false })
-        .range(page * 1000, (page + 1) * 1000 - 1);
+      const data = unwrap(
+        await supabase
+          .from("products")
+          .select("slug, updated_at")
+          .order("created_at", { ascending: false })
+          .range(page * 1000, (page + 1) * 1000 - 1),
+        "sitemap products",
+      );
       if (!data || data.length === 0) break;
       rows.push(...data);
       if (data.length < 1000) break;

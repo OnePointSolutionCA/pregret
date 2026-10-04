@@ -22,14 +22,17 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(req.nextUrl.searchParams.get("limit") ?? "8", 10) || 8, 20);
   const supabase = publicSupabase();
 
-  // Escape LIKE wildcards in user input
-  const safe = q.replace(/[%_\\]/g, "\\$&");
-  const { data } = await supabase
+  // Strip LIKE wildcards and PostgREST filter syntax so input can't alter the .or() filter.
+  const safe = q.replace(/[%_\\(),"]/g, " ").trim();
+  if (!safe) return NextResponse.json({ items: [] });
+  const { data, error } = await supabase
     .from("products")
     .select("slug, name, brand, category, image_url, regret_score")
     .or(`name.ilike.%${safe}%,brand.ilike.%${safe}%`)
     .order("regret_score", { ascending: false })
     .limit(limit);
+  // Don't let the edge cache hold an empty result for an hour when the DB is having a moment.
+  if (error) return NextResponse.json({ items: [] }, { status: 503, headers: { "Cache-Control": "no-store" } });
 
   const items = ((data as Row[]) ?? []).map((p) => ({
     slug: p.slug,

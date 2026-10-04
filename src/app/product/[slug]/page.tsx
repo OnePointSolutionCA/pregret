@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import { CARD_COLUMNS, unwrap } from "@/lib/db";
 import RegretScore from "@/components/RegretScore";
 import DecayCurve from "@/components/DecayCurve";
 import AlternativeCard from "@/components/AlternativeCard";
@@ -11,7 +13,8 @@ import { retailerLabel } from "@/lib/affiliates";
 import { retailersForCategory } from "@/lib/retailer-searches";
 import type { Product, RegretReason } from "@/lib/types";
 
-export const revalidate = 3600;
+// Weekly: scores barely move, and every refresh of 283k crawlable pages costs DB egress.
+export const revalidate = 604800;
 
 // Distinctive product-type words used to rank alternatives by "vibe".
 // A padel racket suggesting a padel ball is technically same-subcategory but
@@ -52,24 +55,27 @@ function productTypeWords(name: string): Set<string> {
   return out;
 }
 
-async function loadProduct(slug: string): Promise<{ product: Product; alts: Product[]; altsSource: "curated" | "dynamic" } | null> {
+// cache(): generateMetadata and the page share one fetch per render.
+const loadProduct = cache(async (slug: string): Promise<{ product: Product; alts: Product[]; altsSource: "curated" | "dynamic" } | null> => {
   if (supabaseConfigured) {
     const supabase = publicSupabase();
-    const { data: product } = await supabase
-      .from("products")
-      .select("*")
-      .eq("slug", slug)
-      .maybeSingle();
+    const product = unwrap(
+      await supabase.from("products").select("*").eq("slug", slug).maybeSingle(),
+      "product",
+    );
     if (product) {
       const p = product as Product;
       // 1. Curated alternatives from product_alternatives table
-      const { data: altRows } = await supabase
-        .from("product_alternatives")
-        .select("alternative:alternative_product_id(*)")
-        .eq("product_id", p.id)
-        .order("switch_count", { ascending: false })
-        .limit(3);
-      const curated = ((altRows as { alternative: Product }[] | null) ?? [])
+      const altRows = unwrap(
+        await supabase
+          .from("product_alternatives")
+          .select(`alternative:alternative_product_id(${CARD_COLUMNS})`)
+          .eq("product_id", p.id)
+          .order("switch_count", { ascending: false })
+          .limit(3),
+        "curated alternatives",
+      );
+      const curated = ((altRows as unknown as { alternative: Product }[] | null) ?? [])
         .map((r) => r.alternative)
         .filter(Boolean);
       if (curated.length > 0) return { product: p, alts: curated, altsSource: "curated" };
@@ -84,11 +90,11 @@ async function loadProduct(slug: string): Promise<{ product: Product; alts: Prod
       const sourceType = productTypeWords(p.name);
 
       const fetchPeers = async (useSub: boolean) => {
-        let q = supabase.from("products").select("*").eq("category", p.category).neq("id", p.id);
+        let q = supabase.from("products").select(CARD_COLUMNS).eq("category", p.category).neq("id", p.id);
         if (useSub && sub) q = q.eq("external_ids->>sub", sub);
         q = q.not("image_url", "is", null).not("amazon_url", "is", null);
-        const { data } = await q.order("regret_score", { ascending: true }).limit(60);
-        return ((data as Product[]) ?? []).filter((x) => x.slug !== p.slug);
+        const data = unwrap(await q.order("regret_score", { ascending: true }).limit(24), "peer products");
+        return ((data as unknown as Product[]) ?? []).filter((x) => x.slug !== p.slug);
       };
 
       // Score each peer by how many product-type words it shares with the source
@@ -122,7 +128,7 @@ async function loadProduct(slug: string): Promise<{ product: Product; alts: Prod
   const altSlugs = DEMO_ALTS[slug] ?? [];
   const alts = altSlugs.map(demoBySlug).filter((p): p is Product => Boolean(p));
   return { product: demo, alts, altsSource: "curated" };
-}
+});
 
 export async function generateStaticParams() {
   return DEMO_PRODUCTS.map((p) => ({ slug: p.slug }));
