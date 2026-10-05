@@ -24,7 +24,7 @@ export default function AlternativeCard({ product, sourceProductSlug }: { produc
             src={product.image_url}
             alt={product.name}
             loading="lazy"
-            className="h-full w-full object-contain p-6"
+            className="h-full w-full object-contain p-6 mix-blend-multiply"
           />
         ) : (
           <div className="flex h-full items-center justify-center font-display text-4xl italic text-[var(--brand-navy)] opacity-40">

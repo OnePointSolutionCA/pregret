@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
             src={product.image_url}
             alt={product.name}
             loading="lazy"
-            className="absolute inset-0 h-full w-full object-contain p-6"
+            className="absolute inset-0 h-full w-full object-contain p-6 mix-blend-multiply"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center font-display text-4xl italic text-[var(--brand-navy)] opacity-40">

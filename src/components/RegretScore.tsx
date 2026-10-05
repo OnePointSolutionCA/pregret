@@ -28,7 +28,8 @@ export default function RegretScore({ score, totalRatings, size = "md", showAdvi
         <div className={`${s.label} uppercase tracking-wider mt-1 opacity-90`}>Regret</div>
       </div>
       <div className="text-center">
-        <div className={`text-sm font-semibold ${copy.text}`}>{copy.label}</div>
+        {/* Pill keeps the tier label readable when the score sits on top of a product photo. */}
+        <div className={`inline-block rounded-full bg-white/95 px-2.5 py-0.5 text-sm font-semibold shadow-sm ${copy.text}`}>{copy.label}</div>
         {typeof totalRatings === "number" && totalRatings > 0 && (
           <div className="text-xs text-slate-500">based on {totalRatings.toLocaleString()} ratings</div>
         )}

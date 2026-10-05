@@ -251,7 +251,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <img
                 src={product.image_url}
                 alt={product.name}
-                className="h-full w-full object-contain p-8 sm:p-12"
+                className="h-full w-full object-contain p-8 mix-blend-multiply sm:p-12"
               />
             ) : (
               <div className="flex h-full items-center justify-center font-display text-8xl italic text-[var(--brand-navy)] opacity-40">

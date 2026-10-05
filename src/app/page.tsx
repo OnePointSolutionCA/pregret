@@ -4,19 +4,21 @@ import RegretScore from "@/components/RegretScore";
 import HeroMosaic from "@/components/HeroMosaic";
 import CategoryTile from "@/components/CategoryTile";
 import ProductRail from "@/components/ProductRail";
-import { CATEGORY_ORDER } from "@/lib/subcategories";
+import { CATEGORY_ORDER, SUBCATEGORIES } from "@/lib/subcategories";
 import snapshot from "@/data/home-snapshot.json";
 import type { Product } from "@/lib/types";
 
 // No DB calls here: rails + images come from a snapshot built at deploy time
 // (scripts/build-home-snapshot.mjs). The old hourly 15k-row scan blew the Supabase egress quota.
 const { rails, categoryHero } = snapshot as unknown as {
-  rails: Record<"trending" | "mostRegret" | "mostLoved" | "newest", Product[]>;
+  rails: Record<"trending" | "mostRegret" | "mostLoved", Product[]>;
   categoryHero: Record<string, string>;
 };
 
+const SUBCATEGORY_COUNT = Object.values(SUBCATEGORIES).reduce((n, subs) => n + subs.length, 0);
+
 export default function Home() {
-  const { mostRegret, mostLoved, newest, trending } = rails;
+  const { mostRegret, mostLoved, trending } = rails;
 
   return (
     <div>
@@ -36,8 +38,8 @@ export default function Home() {
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-white/85 sm:text-xl">
-            Owner-verified satisfaction at day 30, 60, and 90 — not the honeymoon reviews from launch week.
-            Search millions of consumer products across the US and Canada.
+            See how owners feel at day 30, 60, and 90, not just the honeymoon reviews from launch week.
+            Search over 280,000 products across the US and Canada.
           </p>
 
           <div className="mt-8 max-w-2xl">
@@ -46,7 +48,7 @@ export default function Home() {
 
           <div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-white/70">
             <span className="uppercase tracking-wider">Try:</span>
-            {["Dyson V15", "Peloton Bike+", "Instant Pot", "SNOO", "Vitamix"].map((q) => (
+            {["Nintendo Switch", "LEGO", "Graco", "Maybelline", "Crayola"].map((q) => (
               <Link
                 key={q}
                 href={`/search?q=${encodeURIComponent(q)}`}
@@ -74,16 +76,28 @@ export default function Home() {
             See all →
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {CATEGORY_ORDER.map((c, i) => (
+        {/* 15 categories + the "all" tile = 16, which fills 2- and 4-column grids with no gap. */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+          {CATEGORY_ORDER.map((c) => (
             <CategoryTile
               key={c.slug}
               categorySlug={c.slug}
               categoryLabel={c.label}
               heroImage={categoryHero[c.label] ?? null}
-              badge={i < 3 ? "Popular" : undefined}
             />
           ))}
+          <Link
+            href="/categories"
+            className="group flex flex-col justify-between rounded-2xl bg-[var(--brand-navy)] p-5 text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--brand-navy-2)]"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--brand-coral)]">
+              {SUBCATEGORY_COUNT} subcategories
+            </span>
+            <span className="mt-6 font-display text-xl leading-tight sm:text-2xl">
+              Browse every category
+              <span aria-hidden className="ml-2 inline-block text-[var(--brand-coral)] transition group-hover:translate-x-1">→</span>
+            </span>
+          </Link>
         </div>
       </section>
 
@@ -91,8 +105,8 @@ export default function Home() {
       <div id="trending">
         <ProductRail
           title="Trending now"
-          subtitle="The most-reviewed products across the catalog — what everyone's buying."
-          badge="🔥 Trending"
+          subtitle="The most reviewed products from brands you know. What everyone is buying."
+          badge="Trending"
           products={trending}
           seeAllHref="/categories"
         />
@@ -128,8 +142,8 @@ export default function Home() {
       {/* ---------- CAROUSEL: Highest Satisfaction ---------- */}
       <ProductRail
         title="Highest satisfaction"
-        subtitle="Still loved by owners at day 90. Sleep-easy buys."
-        badge="Staff picks"
+        subtitle="Still loved by owners at day 90. Sleep easy buys."
+        badge="Safe bets"
         products={mostLoved}
         seeAllHref="/categories"
       />
@@ -179,15 +193,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ---------- CAROUSEL: Newest ---------- */}
-      <ProductRail
-        title="Newest additions"
-        subtitle="Fresh additions. Scores start AI-estimated and firm up as owners chime in."
-        badge="New"
-        products={newest}
-        seeAllHref="/categories"
-      />
 
       {/* ---------- FINAL CTA ---------- */}
       <section className="mx-auto max-w-4xl px-5 py-16 text-center">
