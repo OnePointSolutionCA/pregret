@@ -3,6 +3,8 @@ export type BlogPost = {
   title: string;
   description: string;
   publishedDate: string;
+  /** Set when an existing post is meaningfully edited; feeds schema dateModified and the sitemap. */
+  modifiedDate?: string;
   category: string;
   readMins: number;
   body: string;
@@ -12,8 +14,10 @@ import { GENERATED_POSTS } from "./blog-generated";
 import { GENERATED_POSTS_V2 } from "./blog-generated-v2";
 import { GENERATED_POSTS_V3 } from "./blog-generated-v3";
 import { GENERATED_POSTS_V4 } from "./blog-generated-v4";
+import { NEW_POSTS, RETIRED_SLUGS, applyPatch } from "./blog-seo-2026-10";
 
-export const POSTS: BlogPost[] = [
+const BASE_POSTS: BlogPost[] = [
+  ...NEW_POSTS,
   ...GENERATED_POSTS,
   ...GENERATED_POSTS_V2,
   ...GENERATED_POSTS_V3,
@@ -245,6 +249,10 @@ Every product on this list shares three traits:
 The kitchen gadgets people regret most are the ones that promise to change your life with technology. The ones they keep are the ones that just work.`,
   },
 ];
+
+// Retired posts are merged elsewhere and 301 in next.config.ts; patches layer hand edits
+// over the auto-generated posts.
+export const POSTS: BlogPost[] = BASE_POSTS.filter((p) => !RETIRED_SLUGS.has(p.slug)).map(applyPatch);
 
 export function getPost(slug: string): BlogPost | undefined {
   return POSTS.find((p) => p.slug === slug);

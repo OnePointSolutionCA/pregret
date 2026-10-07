@@ -6,6 +6,18 @@ import { getPost, getAllPosts } from "@/data/blog";
 // Blog posts are static markdown — pre-render all 141 at build time, serve from cache forever.
 export const dynamic = "force-static";
 
+const STRONG = '<strong class="text-[var(--ink)]">$1</strong>';
+const LINK =
+  '<a href="$2" class="font-semibold text-[var(--brand-navy)] underline decoration-[color:var(--brand-coral)] underline-offset-2 hover:text-[var(--brand-coral)]">$1</a>';
+
+// Post bodies are trusted in-repo markdown. Supports **bold**, *italic* and [text](/path) links
+// (site-relative or https only).
+function inline(text: string, italics = false): string {
+  let html = text.replace(/\[([^\]]+)\]\((\/[^)\s]*|https:\/\/[^)\s]+)\)/g, LINK).replace(/\*\*(.*?)\*\*/g, STRONG);
+  if (italics) html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+  return html;
+}
+
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
 }
@@ -52,9 +64,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             headline: post.title,
             description: post.description,
             datePublished: post.publishedDate,
+            dateModified: post.modifiedDate ?? post.publishedDate,
+            mainEntityOfPage: `https://pregret.ca/blog/${post.slug}`,
             inLanguage: ["en-US", "en-CA"],
             author: { "@type": "Organization", name: "Pregret" },
-            publisher: { "@type": "Organization", name: "Pregret", url: "https://pregret.vercel.app" },
+            publisher: { "@type": "Organization", name: "Pregret", url: "https://pregret.ca" },
             audience: {
               "@type": "PeopleAudience",
               geographicArea: [
@@ -88,6 +102,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <div className="prose-pregret">
         {post.body.split("\n\n").map((block, i) => {
+          if (block.startsWith("### ")) {
+            return <h3 key={i} className="mb-2 mt-6 font-display text-xl font-semibold text-[var(--ink)]">{block.replace("### ", "")}</h3>;
+          }
           if (block.startsWith("## ")) {
             return <h2 key={i} className="mb-3 mt-8 font-display text-2xl font-semibold text-[var(--ink)]">{block.replace("## ", "")}</h2>;
           }
@@ -106,7 +123,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   <tbody>
                     {body.map((row, ri) => (
                       <tr key={ri} className="border-b border-[var(--rule)] last:border-0">
-                        {row.map((cell, ci) => <td key={ci} className="px-4 py-2 text-[var(--ink-2)]">{cell}</td>)}
+                        {row.map((cell, ci) => <td key={ci} className="px-4 py-2 text-[var(--ink-2)]" dangerouslySetInnerHTML={{ __html: inline(cell) }} />)}
                       </tr>
                     ))}
                   </tbody>
@@ -121,8 +138,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             return (
               <Tag key={i} className={`my-4 space-y-2 ${ordered ? "list-decimal" : "list-disc"} pl-6 text-[var(--ink-2)]`}>
                 {items.map((item, j) => {
-                  const text = item.replace(/^[-\d]+\.\s*/, "");
-                  return <li key={j} dangerouslySetInnerHTML={{ __html: text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[var(--ink)]">$1</strong>') }} />;
+                  const text = item.replace(/^(?:-|\d+\.)\s*/, "");
+                  return <li key={j} dangerouslySetInnerHTML={{ __html: inline(text) }} />;
                 })}
               </Tag>
             );
@@ -131,7 +148,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <p
               key={i}
               className="mb-4 leading-relaxed text-[var(--ink-2)]"
-              dangerouslySetInnerHTML={{ __html: block.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[var(--ink)]">$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>') }}
+              dangerouslySetInnerHTML={{ __html: inline(block, true) }}
             />
           );
         })}
