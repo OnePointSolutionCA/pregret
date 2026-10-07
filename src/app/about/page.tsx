@@ -1,7 +1,7 @@
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "About Pregret",
+  title: "About",
   description: "Pregret asks owners at 30, 60 and 90 days whether they still love what they bought, then turns those answers into a Regret Score you can check before you buy.",
   alternates: { canonical: "/about" },
 };
