@@ -1,6 +1,10 @@
 export const dynamic = "force-static";
 
-export const metadata = { title: "Terms" };
+export const metadata = {
+  title: "Terms",
+  description: "Terms of service for Pregret, the free community rating service that tracks how buyers feel about products 30, 60 and 90 days after purchase.",
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsPage() {
   return (

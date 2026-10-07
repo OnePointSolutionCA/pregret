@@ -5,6 +5,12 @@ import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { CARD_COLUMNS, rankSearch, searchFilter, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
 
+
+export const metadata = {
+  title: "Search",
+  alternates: { canonical: "/search" },
+  robots: { index: false, follow: true },
+};
 export const revalidate = 60;
 
 const searchProducts = unstable_cache(

@@ -29,7 +29,7 @@ const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://pregret.vercel.app";
 export const metadata: Metadata = {
   metadataBase: new URL(site),
   title: {
-    default: "Pregret — Know Before You Regret",
+    default: "Pregret | Know Before You Regret",
     template: "%s | Pregret",
   },
   description:
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Pregret",
     url: site,
-    title: "Pregret — Know Before You Regret",
+    title: "Pregret | Know Before You Regret",
     description:
       "The Regret Score for any product. Owner-verified satisfaction at day 30, 60, and 90 — across US and Canada.",
     images: [
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pregret — Know Before You Regret",
+    title: "Pregret | Know Before You Regret",
     description: "Time-decayed satisfaction data on the products you're about to buy.",
     images: ["/og.png"],
   },
