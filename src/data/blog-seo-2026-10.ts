@@ -20,6 +20,9 @@ export type PostPatch = {
 const TODAY = "2026-10-07";
 
 const BF_CANADA = "/blog/amazon-black-friday-canada-2026-deals-with-the-lowest-regret-scores";
+/** Main "Black Friday 2026" / "black friday canada" page. The other Black Friday posts link here near the top. */
+const BF_MAIN = "/blog/the-ultimate-2026-us-and-canada-black-friday-playbook";
+const BF_WHAT_TO_BUY = "/blog/black-friday-2026-what-to-actually-buy-data-backed-guide";
 const WORST_GIFTS = "/blog/worst-christmas-gifts-2026-ranked-by-regret-score";
 const BOXING_DAY = "/blog/boxing-day-deals-canada-2026-what-s-actually-worth-buying";
 
@@ -38,6 +41,8 @@ export const NEW_POSTS: BlogPost[] = [
     category: "Seasonal Guides",
     readMins: 6,
     body: `Black Friday 2026 lands on Friday, November 27, with Cyber Monday on November 30. On Amazon.ca the sale usually starts days earlier and runs through the weekend, so there is plenty of time to shop slowly. This guide does not list prices, because Black Friday prices change by the hour. Instead it gives you a simple way to judge any Amazon.ca deal, plus a list of popular products that score low for regret on Pregret, so you know what is worth watching when the discounts drop.
+
+Planning beyond Amazon? Our main [Black Friday Canada 2026 guide](${BF_MAIN}) covers the sale dates, Canadian and US retailers, cross border traps and a full shopping plan. This page sticks to Amazon.ca.
 
 ## What a Regret Score tells you on Black Friday
 
@@ -90,7 +95,7 @@ High Regret Scores cluster in a few places: novelty gadgets, no name smart home 
 
 ## Missed Black Friday?
 
-You get a second chance on December 26. Our [Boxing Day Deals Canada 2026 guide](${BOXING_DAY}) covers what is worth buying in the Canadian Boxing Day sales. For a wider plan that covers both Amazon.com and Amazon.ca, read [the 2026 US and Canada Black Friday playbook](/blog/the-ultimate-2026-us-and-canada-black-friday-playbook) and [Black Friday 2026: What to Actually Buy](/blog/black-friday-2026-what-to-actually-buy-data-backed-guide).
+You get a second chance on December 26. Our [Boxing Day Deals Canada 2026 guide](${BOXING_DAY}) covers what is worth buying in the Canadian Boxing Day sales. For a wider plan that covers more than Amazon.ca, read our [Black Friday Canada 2026 guide](${BF_MAIN}) and our breakdown of [what to buy on Black Friday 2026, category by category](${BF_WHAT_TO_BUY}).
 
 ## The bottom line
 
@@ -170,22 +175,34 @@ For gifts that people keep using, start with our [Holiday Gift Guide 2026: Gifts
 
 export const PATCHES: Record<string, PostPatch> = {
   // Task: link the new Amazon.ca post from both existing Black Friday posts.
+  // Task (2026-10-07): three Black Friday posts competed for "black friday 2026" / "black friday canada".
+  // The playbook is now the main page; this one is retitled to the "what to buy" category angle.
   "black-friday-2026-what-to-actually-buy-data-backed-guide": {
+    title: "What to Buy on Black Friday 2026: Categories Worth It and Ones to Skip",
+    description:
+      "What to buy on Black Friday 2026, category by category: where electronics, appliances and tools pay off, and where clothing and beauty buys turn to regret.",
     modifiedDate: TODAY,
-    afterIntro: `**Shopping on Amazon.ca?** Our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, with links to each score.`,
+    afterIntro: `**Planning your Black Friday?** Start with our main [Black Friday Canada 2026 guide](${BF_MAIN}) for the sale dates, Canadian and US retailers and a step by step shopping plan. This page goes category by category.
+
+**Shopping on Amazon.ca?** Our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, with links to each score.`,
     append: `## More Black Friday reading
 
 - **[Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA})** for Canadian shoppers on Amazon.ca.
-- **[The Ultimate 2026 US and Canada Black Friday Playbook](/blog/the-ultimate-2026-us-and-canada-black-friday-playbook)** for planning your list before the sale.
+- **[Black Friday Canada 2026: Dates, Deals and How to Avoid Regret](${BF_MAIN})** for planning your list before the sale.
 - **[Boxing Day Deals Canada 2026](${BOXING_DAY})** if you would rather wait for December 26.`,
   },
   "the-ultimate-2026-us-and-canada-black-friday-playbook": {
+    title: "Black Friday Canada 2026: Dates, Deals and How to Avoid Regret",
+    description:
+      "Black Friday 2026 is Friday, November 27. Our Black Friday Canada guide covers sale dates, Amazon.ca vs US deals, cross border traps and regret buys to skip.",
     modifiedDate: TODAY,
-    afterIntro: `**Canadian shopper?** See [Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA}) for Amazon.ca tips and the popular products owners regret least.`,
+    afterIntro: `**Black Friday 2026 dates:** Black Friday is Friday, November 27, 2026, the day after US Thanksgiving, in both Canada and the US. Cyber Monday follows on Monday, November 30.
+
+**Canadian shopper?** See [Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA}) for Amazon.ca tips and the popular products owners regret least.`,
     append: `## More Black Friday reading
 
 - **[Amazon Black Friday Canada 2026](${BF_CANADA})** with low regret picks you can check on Amazon.ca.
-- **[Black Friday 2026: What to Actually Buy](/blog/black-friday-2026-what-to-actually-buy-data-backed-guide)** for the categories worth buying on sale.
+- **[What to Buy on Black Friday 2026](${BF_WHAT_TO_BUY})** for the categories worth buying on sale, and the ones to skip.
 - **[Boxing Day Deals Canada 2026](${BOXING_DAY})** for the December 26 sales in Canada.`,
   },
 
