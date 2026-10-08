@@ -181,6 +181,60 @@ export const PATCHES: Record<string, PostPatch> = {
     title: "What to Buy on Black Friday 2026: Categories Worth It and Ones to Skip",
     description:
       "What to buy on Black Friday 2026, category by category: where electronics, appliances and tools pay off, and where clothing and beauty buys turn to regret.",
+    replace: [
+          [
+                "Black Friday 2026 is shaping up to be a year where smart shoppers will need to separate genuine deals from manufactured urgency. Based on historical pricing data, return patterns, and what actually holds value over time, we've identified the product categories and specific types of items worth your money—and the ones that consistently disappoint buyers after the excitement fades.",
+                "Black Friday 2026 is shaping up to be a year where smart shoppers will need to separate genuine deals from manufactured urgency. Based on historical pricing data, return patterns, and what actually holds value over time, we've identified the product categories and specific types of items worth your money, and the ones that consistently disappoint buyers after the excitement fades."
+          ],
+          [
+                "Black Friday electronics deals are real, but they're specific. Mid-range laptops ($600–$1,200 USD / $900–$1,800 CAD), older-generation smartphones, and streaming devices see genuine price cuts of 20–35%. These categories have predictable refresh cycles, which is why retailers can afford to discount last year's models.",
+                "Black Friday electronics deals are real, but they're specific. Mid-range laptops, older-generation smartphones and streaming devices often see genuine price cuts on Black Friday. These categories have predictable refresh cycles, which is why retailers can afford to discount last year's models."
+          ],
+          [
+                "On Amazon.com and Amazon.ca, the sweet spot for regret-free purchases is established brands with proven track records: laptops from Dell, Lenovo, and ASUS; tablets from Apple or Samsung; and Fire TV devices (which Amazon heavily discounts during this season). Check the return data: mid-range electronics see return rates around 12–15%, well below category averages, likely because buyers know what they're getting and have realistic expectations.",
+                "On Amazon.com and Amazon.ca, the sweet spot for regret-free purchases is established brands with proven track records: laptops from Dell, Lenovo, and ASUS; tablets from Apple or Samsung; and Fire TV devices (which Amazon heavily discounts during this season). These tend to be low regret buys, because shoppers usually know what they're getting and have realistic expectations."
+          ],
+          [
+                "Major appliances—refrigerators, washing machines, dishwashers, air fryers—tend to see legitimate 15–25% reductions during Black Friday. This is one of the few categories where customer satisfaction data shows a correlation between holiday season purchases and long-term satisfaction.",
+                "Major appliances like refrigerators, washing machines, dishwashers and air fryers often see real reductions during Black Friday. It is one of the few categories where buying during the holiday sales and long term satisfaction tend to go together."
+          ],
+          [
+                "The reason? People who buy appliances during Black Friday tend to research them beforehand. Return data shows that air fryers purchased with intention (rather than impulse) maintain satisfaction ratings above 4.2/5 on both Amazon.com and Amazon.ca. Conversely, small appliances bought on impulse—like specialty coffee makers or waffle irons—get returned at rates closer to 18–22%.",
+                "The reason? People who buy appliances during Black Friday tend to research them beforehand. Air fryers bought with a plan, rather than on impulse, tend to stay in regular use. Small appliances bought on impulse, like specialty coffee makers or waffle irons, are a different story: they are far more likely to end up returned or unused."
+          ],
+          [
+                "This is where Black Friday creates the most regret. Clothing typically sees 30–50% discounts, but the return rate for apparel purchased during Black Friday hovers around 28–32%—significantly higher than typical months. Why? Because sizing uncertainty compounds with rushed purchasing.",
+                "This is where Black Friday creates the most regret. Clothing often carries the biggest advertised discounts, but it is also one of the most returned categories, especially when bought in a rush. Why? Because sizing uncertainty compounds with rushed purchasing."
+          ],
+          [
+                "The data is clear: if you know your size across brands, have tried items on before, or are buying basic staples (plain t-shirts, neutral sweaters, everyday socks), Black Friday clothing deals work out. Amazon.com and Amazon.ca offer free returns on most apparel, so the barrier to returns is low—but that also means people return items more freely.",
+                "In general, if you know your size across brands, have tried items on before, or are buying basic staples (plain t-shirts, neutral sweaters, everyday socks), Black Friday clothing deals work out. Amazon.com and Amazon.ca offer free returns on most apparel, so the barrier to returns is low, but that also means people return items more freely."
+          ],
+          [
+                "Power tools, storage solutions, and hardware items see 15–20% Black Friday discounts and maintain high satisfaction rates (4.1+/5) because buyers typically know exactly what they're purchasing. A person buying a specific drill model knows what they're getting into.",
+                "Power tools, storage solutions and hardware items are often discounted on Black Friday and tend to keep owners happy, because buyers typically know exactly what they're purchasing. A person buying a specific drill model knows what they're getting into."
+          ],
+          [
+                "The regret factor is low in this category—around 8–10% return rates—because purchases are intentional rather than impulse-driven. If you've been planning a project and know which tools you need, Black Friday timing is sensible.",
+                "The regret factor is low in this category because purchases are intentional rather than impulse driven. If you've been planning a project and know which tools you need, Black Friday timing is sensible."
+          ],
+          [
+                "On Amazon.com and Amazon.ca, established brands like DeWalt, Milwaukee, and Makita see discounts on previous-generation models. Newer releases launched in summer or fall won't be discounted; you're getting deals on proven, slightly older versions, which is fine—tool reliability hasn't changed dramatically year to year.",
+                "On Amazon.com and Amazon.ca, established brands like DeWalt, Milwaukee, and Makita see discounts on previous-generation models. Newer releases launched in summer or fall won't be discounted; you're getting deals on proven, slightly older versions, which is fine, tool reliability hasn't changed dramatically year to year."
+          ],
+          [
+                "Beauty products and dietary supplements offer deceiving discounts. Retailers mark them up specifically to create Black Friday \"savings\" that often match or undercut regular online prices throughout the year. Return data shows these categories have the highest regret rates: 22–28% of beauty purchases during Black Friday are returned, often because buyers overestimate how much they'll use specialty products.",
+                "Beauty products and dietary supplements offer deceiving discounts. Retailers mark them up specifically to create Black Friday \"savings\" that often match or undercut regular online prices throughout the year. These categories tend to carry the most regret, often because buyers overestimate how much they'll use specialty products."
+          ],
+          [
+                "Skincare, makeup, and supplements are worth buying when you've already used them and want more—not when you're trying something new at a discount. The \"deal\" isn't worth the unused bottle or jar sitting in your bathroom.",
+                "Skincare, makeup, and supplements are worth buying when you've already used them and want more, not when you're trying something new at a discount. The \"deal\" isn't worth the unused bottle or jar sitting in your bathroom."
+          ],
+          [
+                "The products worth your Black Friday money are those you've researched, that address genuine needs, and that come from brands with proven track records on Amazon.com and Amazon.ca. Electronics, appliances, and tools fit this profile. Clothing, beauty products, and supplements do not—not because there aren't savings, but because the savings create psychological pressure to buy without certainty.",
+                "The products worth your Black Friday money are those you've researched, that address genuine needs, and that come from brands with proven track records on Amazon.com and Amazon.ca. Electronics, appliances, and tools fit this profile. Clothing, beauty products, and supplements do not, not because there aren't savings, but because the savings create psychological pressure to buy without certainty."
+          ]
+    ],
     modifiedDate: TODAY,
     afterIntro: `**Planning your Black Friday?** Start with our main [Black Friday Canada 2026 guide](${BF_MAIN}) for the sale dates, Canadian and US retailers and a step by step shopping plan. This page goes category by category.
 
@@ -195,6 +249,32 @@ export const PATCHES: Record<string, PostPatch> = {
     title: "Black Friday Canada 2026: Dates, Deals and How to Avoid Regret",
     description:
       "Black Friday 2026 is Friday, November 27. Our Black Friday Canada guide covers sale dates, Amazon.ca vs US deals, cross border traps and regret buys to skip.",
+    replace: [
+          [
+                "The most effective Black Friday shoppers decide what they need weeks in advance. Start by listing items you've actually considered purchasing—not products you might hypothetically want. Note the regular prices at your preferred retailers and set price-drop alerts on sites like CamelCamelCamel (for Amazon.com) or Keepa to understand what constitutes a genuine discount versus inflated markups followed by \"sales.\"",
+                "The most effective Black Friday shoppers decide what they need weeks in advance. Start by listing items you've actually considered purchasing, not products you might hypothetically want. Note the regular prices at your preferred retailers and set price-drop alerts on sites like CamelCamelCamel (for Amazon.com) or Keepa to understand what constitutes a genuine discount versus inflated markups followed by \"sales.\""
+          ],
+          [
+                "Document your findings in a simple spreadsheet. Include the item, regular price, target sale price (often 15-25% off for legitimate deals), and preferred retailer. This creates accountability and reduces the likelihood of emotional purchasing.",
+                "Document your findings in a simple spreadsheet. Include the item, its regular price, the sale price you would be happy with, and your preferred retailer. This creates accountability and reduces the likelihood of emotional purchasing."
+          ],
+          [
+                "Black Friday timing and retailer participation differ meaningfully between the US and Canada. In the US, Black Friday falls on November 27, 2026, and many retailers start sales earlier in the month or extend them through Cyber Monday. In Canada, Black Friday occurs on the same date, but Canadian retailers sometimes use different promotional windows. Best Buy Canada, Canadian Tire, and Costco Canada typically match or mirror US deals, though pricing varies due to currency exchange rates and import costs—an item discounted 30% at Best Buy US may only drop 20% at Best Buy Canada.",
+                "Black Friday timing and retailer participation differ meaningfully between the US and Canada. In the US, Black Friday falls on November 27, 2026, and many retailers start sales earlier in the month or extend them through Cyber Monday. In Canada, Black Friday occurs on the same date, but Canadian retailers sometimes use different promotional windows. Best Buy Canada, Canadian Tire and Costco Canada often run similar deals to their US counterparts, but prices differ because of exchange rates and import costs, so a deep US discount may be smaller in Canada."
+          ],
+          [
+                "On sale day, resist the temptation to buy \"while stock lasts\" if you haven't completed your research. Use your pre-planned list exclusively. If something on sale wasn't on that list, treat it as a \"consider later\" item and revisit it 48 hours after purchase decisions—most Black Friday deals extend through the following Monday, giving you time for second thoughts.",
+                "On sale day, resist the temptation to buy \"while stock lasts\" if you haven't completed your research. Use your pre-planned list exclusively. If something on sale wasn't on that list, treat it as a \"consider later\" item and revisit it 48 hours after purchase decisions, most Black Friday deals extend through the following Monday, giving you time for second thoughts."
+          ],
+          [
+                "Canadian shoppers should monitor Amazon.ca, Canadian Tire, and Costco Canada simultaneously, as pricing can vary significantly. Canadian Tire sometimes offers loyalty program discounts stacked on top of sale prices, so checking your membership before finalizing purchases pays off. If you do order from US retailers, confirm shipping costs and expected delivery dates—winter weather can delay cross-border shipments in November and December.",
+                "Canadian shoppers should monitor Amazon.ca, Canadian Tire, and Costco Canada simultaneously, as pricing can vary significantly. Canadian Tire sometimes offers loyalty program discounts stacked on top of sale prices, so checking your membership before finalizing purchases pays off. If you do order from US retailers, confirm shipping costs and expected delivery dates, winter weather can delay cross-border shipments in November and December."
+          ],
+          [
+                "Black Friday succeeds when it aligns with genuine purchasing plans rather than driving them. By planning ahead, understanding regional differences, and evaluating deals skeptically, you're more likely to end up with products you actually use—rather than regrettable impulse purchases that seemed unmissable at the time.",
+                "Black Friday succeeds when it aligns with genuine purchasing plans rather than driving them. By planning ahead, understanding regional differences, and evaluating deals skeptically, you're more likely to end up with products you actually use, rather than regrettable impulse purchases that seemed unmissable at the time."
+          ]
+    ],
     modifiedDate: TODAY,
     afterIntro: `**Black Friday 2026 dates:** Black Friday is Friday, November 27, 2026, the day after US Thanksgiving, in both Canada and the US. Cyber Monday follows on Monday, November 30.
 
