@@ -33,7 +33,7 @@ for (const p of ["/", "/about", "/how-it-works", "/privacy", "/terms", "/blog", 
   results.push(await check(p));
 }
 // API
-for (const p of ["/api/search-index", "/api/extension/lookup?title=peloton"]) {
+for (const p of ["/api/search-index"]) {
   results.push(await check(p));
 }
 // Categories + subcategories + sorts

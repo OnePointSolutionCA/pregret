@@ -27,7 +27,7 @@ export async function GET(
 ) {
   const { productId } = await params;
   const url = new URL(req.url);
-  const source = url.searchParams.get("ref") ?? "site";
+  const source = (url.searchParams.get("ref") ?? "site").slice(0, 32);
   // Explicit override via ?to=ca | ?to=us
   const explicitCountry = url.searchParams.get("to")?.toUpperCase();
 
@@ -83,7 +83,12 @@ export async function GET(
   const res = NextResponse.redirect(finalUrl);
   res.headers.set("X-Robots-Tag", "noindex, nofollow");
   if (!req.cookies.get("pg_sid")) {
-    res.cookies.set("pg_sid", sessionId, { httpOnly: true, sameSite: "lax", maxAge: 60 * 60 * 24 * 365 });
+    res.cookies.set("pg_sid", sessionId, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 365,
+    });
   }
   return res;
 }

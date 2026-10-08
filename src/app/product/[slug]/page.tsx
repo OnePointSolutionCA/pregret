@@ -16,6 +16,10 @@ import type { Product, RegretReason } from "@/lib/types";
 // Weekly: scores barely move, and every refresh of 283k crawlable pages costs DB egress.
 export const revalidate = 604800;
 
+// JSON.stringify does not escape "<", so a product name containing "</script>" could end the tag.
+// "\u003c" parses back to "<", so search engines read exactly the same data.
+const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
+
 // Distinctive product-type words used to rank alternatives by "vibe".
 // A padel racket suggesting a padel ball is technically same-subcategory but
 // wrong-vibe — matching on these type words filters that out.
@@ -233,13 +237,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(productSchema) }}
       />
       {faqSchema && (
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }}
         />
       )}
 

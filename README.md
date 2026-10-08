@@ -47,7 +47,6 @@ RLS is on for all four tables. Users see only their own `user_products` rows; `p
 - `/dashboard` — signed-in user's tracked products + pending check-ins
 - `/dashboard/check-in/[id]` — one-tap 30/60/90 day rating
 - `/go/[productId]?ref=` — affiliate redirect + click log
-- `/api/extension/{lookup,impression,click,dismiss}` — Chrome extension endpoints (Phase 2)
 
 ## Deployment
 

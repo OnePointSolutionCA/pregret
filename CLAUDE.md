@@ -88,12 +88,7 @@ src/
 │   ├── product/[slug]/page.tsx   # Product detail: score, decay curve, alternatives
 │   ├── dashboard/page.tsx        # User's tracked products + check-in links
 │   ├── dashboard/check-in/[id]/page.tsx  # Day 30/60/90 satisfaction input
-│   ├── go/[productId]/route.ts   # Affiliate redirect + click tracking
-│   └── api/extension/
-│       ├── lookup/route.ts     # Browser extension: match product by title/ASIN
-│       ├── click/route.ts      # Extension: log affiliate click
-│       ├── dismiss/route.ts    # Extension: dismiss tooltip
-│       └── impression/route.ts # Extension: log popup impression
+│   └── go/[productId]/route.ts   # Affiliate redirect + click tracking
 ├── components/
 │   ├── Navbar.tsx              # Sticky header (cream + blur)
 │   ├── NavLogo.tsx             # Animated logo (spin + wipe + shine)
@@ -170,14 +165,10 @@ Expansion plan: Home & Garden, Baby Products, Beauty, Fashion, Automotive
 
 ## Browser Extension API
 
-The `/api/extension/` endpoints support a future browser extension that shows regret scores inline on Amazon product pages:
-
-- `GET /api/extension/lookup?title=X&brand=Y&asin=Z` — returns regret score + best alternative
-- `POST /api/extension/impression` — logs tooltip shown
-- `POST /api/extension/click` — logs user clicking "see alternative"
-- `POST /api/extension/dismiss` — logs user dismissing tooltip
-
-All endpoints return CORS headers for cross-origin extension requests.
+Removed 2026-10-08 in the security pass. The four `/api/extension/*` routes were unused (no
+extension was ever published) and let anyone write unchecked rows and trigger full table scans.
+When the extension is built, restore them from git history (the commit before "Security pass")
+and add input validation, an origin allowlist instead of `*`, and a rate limit first.
 
 ---
 

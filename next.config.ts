@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
+// Baseline security headers for every response. Kept to headers that cannot change how a page
+// renders: no CSP here (a nonce CSP would force dynamic rendering and undo ISR caching).
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), payment=(), usb=()" },
+];
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
   async redirects() {
     return [
       // Near-duplicate merged into the Lululemon Studio Mirror comparison (see RETIRED_SLUGS
