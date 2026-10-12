@@ -18,6 +18,8 @@ export type PostPatch = {
 };
 
 const TODAY = "2026-10-07";
+/** Search Console fixes, 2026-10-12. */
+const EDITED_OCT_12 = "2026-10-12";
 
 const BF_CANADA = "/blog/amazon-black-friday-canada-2026-deals-with-the-lowest-regret-scores";
 /** Main "Black Friday 2026" / "black friday canada" page. The other Black Friday posts link here near the top. */
@@ -29,20 +31,26 @@ const BOXING_DAY = "/blog/boxing-day-deals-canada-2026-what-s-actually-worth-buy
 /** Posts merged into another post. Each one has a 301 in next.config.ts. */
 export const RETIRED_SLUGS = new Set<string>([
   "mirror-by-lululemon-vs-concept2-rowerg-which-has-lower-long-term-regret",
+  // 2026-10-12: "Mirror (by Lululemon)" duplicates of the Lululemon Studio Mirror posts.
+  "should-you-buy-the-mirror-by-lululemon-in-2026-us-and-canada-guide",
+  "mirror-by-lululemon-vs-rep-fitness-pr-4000-rack-which-has-lower-long-term-regret",
 ]);
 
 export const NEW_POSTS: BlogPost[] = [
   {
     slug: "amazon-black-friday-canada-2026-deals-with-the-lowest-regret-scores",
-    title: "Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores",
+    title: "Amazon.ca Black Friday 2026: Deals With the Lowest Regret Scores",
     description:
       "Amazon.ca Black Friday 2026 guide for Canadians: how to spot a real deal, avoid regret buys, and which popular products have the lowest Regret Scores.",
     publishedDate: TODAY,
+    // 2026-10-12: retitled from "Amazon Black Friday Canada 2026" so only the playbook (BF_MAIN)
+    // targets "Black Friday Canada 2026".
+    modifiedDate: EDITED_OCT_12,
     category: "Seasonal Guides",
     readMins: 6,
     body: `Black Friday 2026 lands on Friday, November 27, with Cyber Monday on November 30. On Amazon.ca the sale usually starts days earlier and runs through the weekend, so there is plenty of time to shop slowly. This guide does not list prices, because Black Friday prices change by the hour. Instead it gives you a simple way to judge any Amazon.ca deal, plus a list of popular products that score low for regret on Pregret, so you know what is worth watching when the discounts drop.
 
-Planning beyond Amazon? Our main [Black Friday Canada 2026 guide](${BF_MAIN}) covers the sale dates, Canadian and US retailers, cross border traps and a full shopping plan. This page sticks to Amazon.ca.
+Planning beyond Amazon? Our main [Black Friday Canada](${BF_MAIN}) guide covers the sale dates, Canadian and US retailers, cross border traps and a full shopping plan. This page sticks to Amazon.ca.
 
 ## What a Regret Score tells you on Black Friday
 
@@ -169,7 +177,7 @@ The [Skullcandy Indy](/product/skullcandy-indy-true-wireless-in-ear-earbuds-blac
 
 ## Better gift ideas
 
-For gifts that people keep using, start with our [Holiday Gift Guide 2026: Gifts with the Lowest Regret Scores](/blog/holiday-gift-guide-2026-gifts-with-the-lowest-regret-scores). Shopping on a budget? See [low regret gifts under $50](/blog/holiday-gift-guide-2026-low-regret-gifts-under-50) and [low regret gifts under $100](/blog/holiday-gift-guide-2026-low-regret-gifts-under-100). Buying gifts in the Amazon.ca Black Friday sale? Our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores.`,
+For gifts that people keep using, start with our [Christmas Gift Ideas 2026: Gifts With the Lowest Regret Scores](/blog/holiday-gift-guide-2026-gifts-with-the-lowest-regret-scores). Shopping on a budget? See [low regret gifts under $50](/blog/holiday-gift-guide-2026-low-regret-gifts-under-50) and [low regret gifts under $100](/blog/holiday-gift-guide-2026-low-regret-gifts-under-100). Buying gifts in the Amazon.ca Black Friday sale? Our [Amazon.ca Black Friday 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores.`,
   },
 ];
 
@@ -238,10 +246,10 @@ export const PATCHES: Record<string, PostPatch> = {
     modifiedDate: TODAY,
     afterIntro: `**Planning your Black Friday?** Start with our main [Black Friday Canada 2026 guide](${BF_MAIN}) for the sale dates, Canadian and US retailers and a step by step shopping plan. This page goes category by category.
 
-**Shopping on Amazon.ca?** Our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, with links to each score.`,
+**Shopping on Amazon.ca?** Our [Amazon.ca Black Friday 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, with links to each score.`,
     append: `## More Black Friday reading
 
-- **[Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA})** for Canadian shoppers on Amazon.ca.
+- **[Amazon.ca Black Friday 2026: Deals With the Lowest Regret Scores](${BF_CANADA})** for Canadian shoppers on Amazon.ca.
 - **[Black Friday Canada 2026: Dates, Deals and How to Avoid Regret](${BF_MAIN})** for planning your list before the sale.
 - **[Boxing Day Deals Canada 2026](${BOXING_DAY})** if you would rather wait for December 26.`,
   },
@@ -278,10 +286,10 @@ export const PATCHES: Record<string, PostPatch> = {
     modifiedDate: TODAY,
     afterIntro: `**Black Friday 2026 dates:** Black Friday is Friday, November 27, 2026, the day after US Thanksgiving, in both Canada and the US. Cyber Monday follows on Monday, November 30.
 
-**Canadian shopper?** See [Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA}) for Amazon.ca tips and the popular products owners regret least.`,
+**Canadian shopper?** See [Amazon.ca Black Friday 2026: Deals With the Lowest Regret Scores](${BF_CANADA}) for Amazon.ca tips and the popular products owners regret least.`,
     append: `## More Black Friday reading
 
-- **[Amazon Black Friday Canada 2026](${BF_CANADA})** with low regret picks you can check on Amazon.ca.
+- **[Amazon.ca Black Friday 2026](${BF_CANADA})** with low regret picks you can check on Amazon.ca.
 - **[What to Buy on Black Friday 2026](${BF_WHAT_TO_BUY})** for the categories worth buying on sale, and the ones to skip.
 - **[Boxing Day Deals Canada 2026](${BOXING_DAY})** for the December 26 sales in Canada.`,
   },
@@ -297,13 +305,13 @@ export const PATCHES: Record<string, PostPatch> = {
     append: `## Related guides
 
 - **[Boxing Day Deals Canada 2026: What's Actually Worth Buying](${BOXING_DAY})**
-- **[Amazon Black Friday Canada 2026: Deals With the Lowest Regret Scores](${BF_CANADA})**`,
+- **[Amazon.ca Black Friday 2026: Deals With the Lowest Regret Scores](${BF_CANADA})**`,
   },
   "boxing-day-deals-canada-2026-what-s-actually-worth-buying": {
     modifiedDate: TODAY,
     append: `## Shopping before Boxing Day?
 
-Amazon.ca Black Friday comes first. Our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, and our [worst Christmas gifts ranking](${WORST_GIFTS}) shows what to skip.`,
+Amazon.ca Black Friday comes first. Our [Amazon.ca Black Friday 2026 guide](${BF_CANADA}) lists popular products with the lowest Regret Scores, and our [worst Christmas gifts ranking](${WORST_GIFTS}) shows what to skip.`,
   },
 
   // Task: retitle toward "best air fryer canada" (position ~21). No prices added.
@@ -320,7 +328,7 @@ Amazon.ca Black Friday comes first. Our [Amazon Black Friday Canada 2026 guide](
 - **Confirm the warranty covers Canada.** Some brands only honour the warranty in the country of sale. If you buy from a US listing or a third party seller, check this first.
 - **Buy from a seller with easy returns.** "Ships from and sold by Amazon.ca" makes a return simple. Test the air fryer in the first week so you are well inside the return window.
 - **Pick the size for your household, not the biggest box.** A basket that is too large for one or two people wastes counter space, and that is one of the most common reasons small appliances stop getting used.
-- **Wait for a sale if you can.** Air fryers are often discounted in the Amazon.ca Black Friday and Boxing Day sales. See our [Amazon Black Friday Canada 2026 guide](${BF_CANADA}) and [Boxing Day Deals Canada 2026](${BOXING_DAY}).
+- **Wait for a sale if you can.** Air fryers are often discounted in the Amazon.ca Black Friday and Boxing Day sales. See our [Amazon.ca Black Friday 2026 guide](${BF_CANADA}) and [Boxing Day Deals Canada 2026](${BOXING_DAY}).
 
 Still deciding if you need one at all? Read [Instant Pot vs Air Fryer: Which Kitchen Gadget Do Owners Keep Using](/blog/instant-pot-vs-air-fryer-which-kitchen-gadget-do-owners-keep-using), or browse Regret Scores in our [Kitchen category](/category/kitchen).`,
   },
@@ -348,17 +356,35 @@ Still deciding if you need one at all? Read [Instant Pot vs Air Fryer: Which Kit
 ## Read more
 
 - **[Should You Buy the Lululemon Studio Mirror in 2026?](/blog/should-you-buy-the-lululemon-studio-mirror-in-2026-us-and-canada-guide)**
-- **[Should You Buy the Mirror (by Lululemon) in 2026?](/blog/should-you-buy-the-mirror-by-lululemon-in-2026-us-and-canada-guide)**
 - **[Should You Buy the Concept2 RowErg in 2026?](/blog/should-you-buy-the-concept2-rowerg-in-2026-us-and-canada-guide)**
 - **[The 5 Most Regretted Fitness Products in 2026](/blog/most-regretted-fitness-products-2026)**`,
   },
 
   // Point the main gift guide at the new "worst gifts" post.
+  // 2026-10-12: retitled toward "christmas gift ideas"; the old title line in the body is dropped.
   "holiday-gift-guide-2026-gifts-with-the-lowest-regret-scores": {
-    modifiedDate: TODAY,
+    title: "Christmas Gift Ideas 2026: Gifts With the Lowest Regret Scores",
+    description:
+      "Christmas gift ideas for 2026 that people keep using after January, by budget: under $50, $50 to $150 and over $150, plus the gift types to skip.",
+    modifiedDate: EDITED_OCT_12,
+    replace: [["# Holiday Gift Guide 2026: Gifts with the Lowest Regret Scores\n\n", ""]],
     append: `## What not to give
 
 The flip side of this guide is our [Worst Christmas Gifts 2026, Ranked by Regret Score](${WORST_GIFTS}), a list of popular gifts owners regret the most.`,
+  },
+
+  // 2026-10-12: retitled toward "cyber monday canada", with the 2026 sale dates near the top.
+  "cyber-monday-2026-the-categories-with-the-highest-post-sale-regret": {
+    title: "Cyber Monday Canada 2026: Categories With the Highest Regret",
+    modifiedDate: EDITED_OCT_12,
+    replace: [["# Cyber Monday 2026: The Categories with the Highest Post-Sale Regret\n\n", ""]],
+    afterIntro: `**Cyber Monday 2026 dates:** Cyber Monday is Monday, November 30, 2026. Black Friday is Friday, November 27, 2026. For the whole sale weekend, see our [Black Friday Canada](${BF_MAIN}) guide.`,
+  },
+
+  // 2026-10-12: the generated title was about 220 characters.
+  "is-the-back-stretcher-cracker-spine-board-multi-level-back-massager-lumbar-pain-relief-dev": {
+    title: "Back Stretcher Review 2026: Is It Worth It?",
+    modifiedDate: EDITED_OCT_12,
   },
 };
 

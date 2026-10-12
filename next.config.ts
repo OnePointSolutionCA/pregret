@@ -23,6 +23,24 @@ const nextConfig: NextConfig = {
         destination: "/blog/lululemon-studio-mirror-vs-concept2-rowerg-which-has-lower-long-term-regret",
         statusCode: 301,
       },
+      // "Mirror (by Lululemon)" duplicates merged into their Lululemon Studio Mirror twins (also in
+      // RETIRED_SLUGS).
+      {
+        source: "/blog/should-you-buy-the-mirror-by-lululemon-in-2026-us-and-canada-guide",
+        destination: "/blog/should-you-buy-the-lululemon-studio-mirror-in-2026-us-and-canada-guide",
+        statusCode: 301,
+      },
+      {
+        source: "/blog/mirror-by-lululemon-vs-rep-fitness-pr-4000-rack-which-has-lower-long-term-regret",
+        destination: "/blog/lululemon-studio-mirror-vs-rep-fitness-pr-4000-rack-which-has-lower-long-term-regret",
+        statusCode: 301,
+      },
+      // No product row has this slug (404 in Search Console); send it to the SNOO guide.
+      {
+        source: "/product/snoo-smart-sleeper-bassinet",
+        destination: "/blog/should-you-buy-the-snoo-smart-sleeper-bassinet-in-2026-us-and-canada-guide",
+        statusCode: 301,
+      },
       // Short form of the Boxing Day guide URL.
       {
         source: "/blog/boxing-day-deals-canada-2026",
