@@ -572,8 +572,8 @@ export const GENERATED_POSTS: BlogPost[] = [
   },
   {
     "slug": "amazon-us-vs-amazon-canada-which-marketplace-is-better",
-    "title": "Amazon US vs Amazon Canada: Which Marketplace Is Better?",
-    "description": "Pricing, shipping speed, return policy, and warranty comparison for US and Canadian Prime members in 2026.",
+    "title": "Amazon.ca vs Amazon.com: Is Amazon Canada Different?",
+    "description": "Is Amazon.ca different from Amazon.com? We compare prices, shipping speed, returns and warranty for Canadian shoppers so you know which one to order from.",
     "publishedDate": "2026-02-16",
     "category": "Buying Guides",
     "readMins": 4,
