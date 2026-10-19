@@ -4,13 +4,15 @@ import { unstable_cache } from "next/cache";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { CARD_COLUMNS, rankSearch, searchFilter, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 
-export const metadata = {
-  title: "Search",
-  alternates: { canonical: "/search" },
+export const metadata = pageMeta({
+  path: "/search",
+  title: withSuffix("Search"),
+  description: "Search Pregret for any product and see its Regret Score before you buy.",
   robots: { index: false, follow: true },
-};
+});
 export const revalidate = 60;
 
 const searchProducts = unstable_cache(

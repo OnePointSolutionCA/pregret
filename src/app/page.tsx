@@ -7,6 +7,14 @@ import ProductRail from "@/components/ProductRail";
 import { CATEGORY_ORDER, SUBCATEGORIES } from "@/lib/subcategories";
 import snapshot from "@/data/home-snapshot.json";
 import type { Product } from "@/lib/types";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata = pageMeta({
+  path: "/",
+  title: "Pregret | Know Before You Regret",
+  description:
+    "The Regret Score for any product, before you buy. Owner-verified satisfaction data at day 30, 60, and 90. Serving shoppers across the US and Canada.",
+});
 
 // No DB calls here: rails + images come from a snapshot built at deploy time
 // (scripts/build-home-snapshot.mjs). The old hourly 15k-row scan blew the Supabase egress quota.

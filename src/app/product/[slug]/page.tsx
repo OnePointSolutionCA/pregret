@@ -12,6 +12,7 @@ import { demoBySlug, DEMO_ALTS, DEMO_PRODUCTS } from "@/lib/demo";
 import { retailerLabel } from "@/lib/affiliates";
 import { retailersForCategory } from "@/lib/retailer-searches";
 import type { Product, RegretReason } from "@/lib/types";
+import { pageMeta, productDescription, productTitle } from "@/lib/seo";
 
 // Weekly: scores barely move, and every refresh of 283k crawlable pages costs DB egress.
 export const revalidate = 604800;
@@ -143,11 +144,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const loaded = await loadProduct(slug);
   if (!loaded) return { title: "Product not found" };
   const { product } = loaded;
-  return {
-    title: `Should You Buy the ${product.name}? ${product.regret_score}% Regret It`,
-    description: `${product.regret_score}% of owners regret buying the ${product.name}. See the day 30, 60, and 90 satisfaction data before you buy.`,
-    alternates: { canonical: `/product/${product.slug}` },
-  };
+  // Name first, about 60 characters; 150 to 160 character description (see src/lib/seo.ts).
+  return pageMeta({
+    path: `/product/${product.slug}`,
+    title: productTitle(product.name, product.regret_score),
+    description: productDescription(product.name, product.regret_score, product.would_buy_again_pct),
+    image: product.image_url,
+    imageAlt: product.name,
+  });
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -163,16 +167,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         : "You might also like";
   const reasons: RegretReason[] = product.top_regret_reasons ?? [];
 
-  // Structured data — Product schema with Amazon rating aggregate + FAQPage from owner_voice.
-  // Both help Google surface rich snippets, which is legitimate SEO (no cloaking, no keyword stuffing).
+  // Structured data: Product (name, image, brand, category) + FAQPage from owner_voice.
+  // No aggregateRating: the only ratings we hold are Amazon's, which are not shown on this page,
+  // and Google's review snippet rules do not allow ratings collected on another site.
   const ext = product.external_ids as {
-    amazon_stars?: string;
-    amazon_reviews?: string;
     owner_voice?: { loves?: string[]; regrets?: string[] };
     description?: string;
   } | null;
-  const amazonStars = parseFloat(ext?.amazon_stars ?? "0") || 0;
-  const amazonReviews = parseInt(ext?.amazon_reviews ?? "0", 10) || 0;
   const voice = ext?.owner_voice;
 
   const productSchema = {
@@ -183,16 +184,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     ...(product.brand ? { brand: { "@type": "Brand", name: product.brand } } : {}),
     ...(ext?.description ? { description: ext.description } : {}),
     ...(product.category ? { category: product.category } : {}),
-    ...(amazonStars > 0 && amazonReviews > 0
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: amazonStars.toFixed(1),
-            reviewCount: amazonReviews,
-            bestRating: "5",
-          },
-        }
-      : {}),
   };
 
   const faqSchema = voice && ((voice.loves?.length ?? 0) > 0 || (voice.regrets?.length ?? 0) > 0)
@@ -225,7 +216,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             name: `Is the ${product.name} worth buying?`,
             acceptedAnswer: {
               "@type": "Answer",
-              text: `Pregret's Regret Score for the ${product.name} is ${product.regret_score}/100 with ${product.would_buy_again_pct}% of owners saying they'd buy again. ${product.regret_score >= 60 ? "Most owners regret this purchase — read the full breakdown below." : product.regret_score <= 30 ? "Most owners stay happy at day 90 — a solid buy." : "Mixed reviews — depends on your use case."}`,
+              text: `Pregret's Regret Score for the ${product.name} is ${product.regret_score}/100 with ${product.would_buy_again_pct}% of owners saying they'd buy again. ${product.regret_score >= 60 ? "Most owners regret this purchase. Read the full breakdown below." : product.regret_score <= 30 ? "Most owners stay happy at day 90. A solid buy." : "Mixed reviews, so it depends on your use case."}`,
             },
           },
         ],
@@ -316,7 +307,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
 
               <p className="mt-3 text-xs text-[var(--muted)]">
-                Affiliate links — commissions never influence scores. We auto-detect your country on Amazon; other retailers use Impact.com and Skimlinks.
+                Affiliate links. Commissions never influence scores. We auto-detect your country on Amazon; other retailers use Impact.com and Skimlinks.
               </p>
             </div>
           )}

@@ -14,7 +14,7 @@ export default function Footer() {
           <div>
             <div className="font-display text-2xl italic text-[var(--brand-navy)]">Pregret</div>
             <p className="mt-2 text-sm leading-relaxed text-[var(--ink-2)]">
-              The Regret Score for any product — before you buy. Owner-verified satisfaction at day 30, 60, and 90.
+              The Regret Score for any product, before you buy. Owner-verified satisfaction at day 30, 60, and 90.
             </p>
             <p className="mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--brand-coral)]">
               Serving US &amp; Canada
@@ -37,6 +37,11 @@ export default function Footer() {
               <li>
                 <Link href="/categories" className="font-semibold text-[var(--brand-navy)] hover:text-[var(--brand-coral)]">
                   Browse all →
+                </Link>
+              </li>
+              <li>
+                <Link href="/browse" className="font-semibold text-[var(--brand-navy)] hover:text-[var(--brand-coral)]">
+                  Browse rated products →
                 </Link>
               </li>
             </ul>
@@ -85,14 +90,14 @@ export default function Footer() {
         {/* ---------- Affiliate disclosure (legally required) ---------- */}
         <div className="mt-12 rounded-2xl border border-[var(--rule)] bg-white p-5 text-xs leading-relaxed text-[var(--ink-2)]">
           <strong className="font-semibold text-[var(--ink)]">Affiliate disclosure.</strong>{" "}
-          Pregret participates in a range of affiliate programs — including the Amazon Services LLC
+          Pregret participates in a range of affiliate programs, including the Amazon Services LLC
           Associates Program, Amazon.ca Associates, Best Buy Affiliate, Walmart Affiliate Network,
           Target Affiliates, Wayfair, The Home Depot Affiliate, eBay Partner Network, and universal
-          networks such as Impact.com, Commission Junction, Rakuten Advertising, and Skimlinks —
-          each designed to let sites earn commissions by linking to their retailers. Some outbound
+          networks such as Impact.com, Commission Junction, Rakuten Advertising, and Skimlinks.
+          Each is designed to let sites earn commissions by linking to their retailers. Some outbound
           product links on this site are affiliate links; if you click one and complete a purchase
           we may earn a small commission at no extra cost to you. Commissions{" "}
-          <strong className="text-[var(--ink)]">never</strong> influence Regret Scores — every score
+          <strong className="text-[var(--ink)]">never</strong> influence Regret Scores. Every score
           is calculated from publicly available review data using a deterministic formula.
         </div>
 

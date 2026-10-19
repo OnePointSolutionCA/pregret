@@ -4,14 +4,16 @@ import RegretScore from "@/components/RegretScore";
 import AmazonCountryCTA from "@/components/AmazonCountryCTA";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import type { Product } from "@/lib/types";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Compare products",
+export const metadata: Metadata = pageMeta({
+  path: "/compare",
+  title: withSuffix("Compare products"),
   description: "Side-by-side regret scores, ratings and prices for up to 3 products.",
   robots: { index: false, follow: true },
-};
+});
 
 export default async function ComparePage({ searchParams }: { searchParams: Promise<{ ids?: string }> }) {
   const { ids = "" } = await searchParams;

@@ -1,15 +1,16 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { CATEGORY_ORDER, SUBCATEGORIES } from "@/lib/subcategories";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Browse all categories",
+export const metadata: Metadata = pageMeta({
+  path: "/categories",
+  title: withSuffix("Browse all categories"),
   description:
-    "Every product Pregret tracks — Electronics, Kitchen, Fitness, Personal Care, Home & Garden, Baby, and Beauty. Owner-verified regret scores at day 30, 60, and 90 for US and Canadian shoppers.",
-  alternates: { canonical: "/categories" },
-};
+    "Every product category Pregret tracks, from Electronics, Kitchen, and Fitness to Baby, Beauty, and Pet Supplies, with regret scores at day 30, 60, and 90.",
+});
 
 export default function CategoriesPage() {
   return (
@@ -25,6 +26,14 @@ export default function CategoriesPage() {
           Owner-verified regret scores across every corner of the catalog.
         </p>
       </div>
+
+      <p className="-mt-6 mb-8 text-sm text-[var(--muted)]">
+        Prefer a plain list?{" "}
+        <Link href="/browse" className="font-semibold text-[var(--brand-navy)] underline decoration-[color:var(--brand-coral)] underline-offset-2">
+          Browse rated products
+        </Link>
+        , 100 per page.
+      </p>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORY_ORDER.map((cat, i) => {

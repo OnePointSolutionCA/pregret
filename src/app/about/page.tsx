@@ -1,10 +1,11 @@
 export const dynamic = "force-static";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
-export const metadata = {
-  title: "About",
+export const metadata = pageMeta({
+  path: "/about",
+  title: withSuffix("About"),
   description: "Pregret asks owners at 30, 60 and 90 days whether they still love what they bought, then turns those answers into a Regret Score you can check before you buy.",
-  alternates: { canonical: "/about" },
-};
+});
 
 export default function AboutPage() {
   return (
@@ -13,7 +14,7 @@ export default function AboutPage() {
       <div className="prose prose-slate mt-6 max-w-none">
         <p className="text-lg text-slate-700">
           Every product review site has the same blind spot: reviews are written on day one, when people are still in
-          the honeymoon phase. Nobody tracks how buyers feel three months in — after the returns window closes.
+          the honeymoon phase. Nobody tracks how buyers feel three months in, after the returns window closes.
         </p>
         <p className="text-slate-700">
           Pregret is different. We ask owners a one-tap question at 30, 60, and 90 days: <em>do you still love it?</em>
@@ -21,7 +22,7 @@ export default function AboutPage() {
         </p>
         <h2 className="mt-8 text-xl font-bold text-slate-900">How the score works</h2>
         <p className="text-slate-700">
-          Day 90 responses carry the most weight — they&apos;re the truest signal that a product earned its price. AI
+          Day 90 responses carry the most weight. They&apos;re the truest signal that a product earned its price. AI
           seed data fills the gaps until enough real owners have chimed in.
         </p>
         <h2 className="mt-8 text-xl font-bold text-slate-900">How we make money</h2>

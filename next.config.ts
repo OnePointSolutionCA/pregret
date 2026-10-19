@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // www.pregret.ca served a full copy of the site (200). One host only: send it to the apex.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.pregret.ca" }],
+        destination: "https://pregret.ca/:path*",
+        permanent: true,
+      },
       // Near-duplicate merged into the Lululemon Studio Mirror comparison (see RETIRED_SLUGS
       // in src/data/blog-seo-2026-10.ts).
       {

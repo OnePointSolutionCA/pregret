@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s | Pregret",
   },
   description:
-    "The Regret Score for any product — before you buy. Owner-verified satisfaction data at day 30, 60, and 90. Serving shoppers across the US and Canada.",
+    "The Regret Score for any product, before you buy. Owner-verified satisfaction data at day 30, 60, and 90. Serving shoppers across the US and Canada.",
   keywords: [
     "product regret score",
     "should I buy",
@@ -42,27 +42,21 @@ export const metadata: Metadata = {
     "long-term reviews",
     "worth it",
   ],
-  alternates: {
-    canonical: "/",
-    languages: {
-      "en-US": "/",
-      "en-CA": "/",
-      "en": "/",
-    },
-  },
+  // No site-wide canonical or og:url here: a parent value is inherited by every page that does
+  // not set its own, which pointed pages at the homepage. Pages set both through pageMeta().
+  // No hreflang either: one English site serves the US and Canada at the same URLs.
   openGraph: {
     type: "website",
     siteName: "Pregret",
-    url: site,
     title: "Pregret | Know Before You Regret",
     description:
-      "The Regret Score for any product. Owner-verified satisfaction at day 30, 60, and 90 — across US and Canada.",
+      "The Regret Score for any product. Owner-verified satisfaction at day 30, 60, and 90, across the US and Canada.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Pregret — The Regret Score for anything before you buy it.",
+        alt: "Pregret. The Regret Score for anything before you buy it.",
       },
     ],
   },
@@ -95,18 +89,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <meta name="geo.region" content="US" />
         <meta name="geo.region" content="CA" />
         <meta name="geo.placename" content="United States, Canada" />
-        <link rel="alternate" hrefLang="en-US" href={site} />
-        <link rel="alternate" hrefLang="en-CA" href={site} />
-        <link rel="alternate" hrefLang="en" href={site} />
-        <link rel="alternate" hrefLang="x-default" href={site} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
+              "@id": `${site}/#website`,
               name: "Pregret",
               url: site,
+              publisher: { "@id": `${site}/#organization` },
               inLanguage: ["en-US", "en-CA"],
               audience: {
                 "@type": "PeopleAudience",
@@ -129,9 +121,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
+              "@id": `${site}/#organization`,
               name: "Pregret",
               url: site,
-              logo: `${site}/logo.png`,
+              logo: { "@type": "ImageObject", url: `${site}/logo.png` },
+              description:
+                "Pregret publishes a Regret Score for products sold to shoppers in the US and Canada, showing how satisfaction holds up at day 30, 60, and 90.",
               areaServed: [
                 { "@type": "Country", name: "United States" },
                 { "@type": "Country", name: "Canada" },
@@ -160,7 +155,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="rd flex min-h-full flex-col" data-rd>
           <span className="rd-progress" data-progress />
           <Navbar />
-          <main className="flex-1">{children}</main>
+          {/* overflow-x-clip: scroll reveal items start 70px to the side, which made phones scroll
+              sideways. clip (not hidden) creates no scroll container, so sticky panels still work. */}
+          <main className="flex-1 overflow-x-clip">{children}</main>
           <Footer />
           <AnimationLayer />
           <CompareBar />

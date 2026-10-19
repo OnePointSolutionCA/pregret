@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getAllPosts } from "@/data/blog";
+import { ORG_ID, SITE_URL, blogTitle, fitDescription, pageMeta } from "@/lib/seo";
 
 // Blog posts are static markdown — pre-render all 141 at build time, serve from cache forever.
 export const dynamic = "force-static";
@@ -26,21 +27,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = getPost(slug);
   if (!post) return { title: "Post not found" };
-  return {
-    title: post.title,
-    description: post.description,
-    alternates: {
-      canonical: `/blog/${post.slug}`,
-      languages: { "en-US": `/blog/${post.slug}`, "en-CA": `/blog/${post.slug}`, "en": `/blog/${post.slug}` },
-    },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.description,
+  // Only titles too long for search results are shortened; the H1 below keeps the full title.
+  return pageMeta({
+    path: `/blog/${post.slug}`,
+    title: blogTitle(post.title),
+    description: fitDescription(post.description),
+    type: "article",
+    article: {
       publishedTime: post.publishedDate,
+      modifiedTime: post.modifiedDate ?? post.publishedDate,
       section: post.category,
     },
-  };
+  });
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -65,10 +63,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             description: post.description,
             datePublished: post.publishedDate,
             dateModified: post.modifiedDate ?? post.publishedDate,
-            mainEntityOfPage: `https://pregret.ca/blog/${post.slug}`,
+            mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
+            url: `${SITE_URL}/blog/${post.slug}`,
+            image: `${SITE_URL}/og.png`,
             inLanguage: ["en-US", "en-CA"],
-            author: { "@type": "Organization", name: "Pregret" },
-            publisher: { "@type": "Organization", name: "Pregret", url: "https://pregret.ca" },
+            author: { "@type": "Organization", "@id": ORG_ID, name: "Pregret", url: SITE_URL },
+            publisher: {
+              "@type": "Organization",
+              "@id": ORG_ID,
+              name: "Pregret",
+              url: SITE_URL,
+              logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+            },
             audience: {
               "@type": "PeopleAudience",
               geographicArea: [

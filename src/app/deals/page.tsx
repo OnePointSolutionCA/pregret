@@ -3,15 +3,16 @@ import ProductCard from "@/components/ProductCard";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { CARD_COLUMNS, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 export const revalidate = 86400;
 
-export const metadata: Metadata = {
-  title: "Deals — Safest buys with 4★+ ratings",
+export const metadata: Metadata = pageMeta({
+  path: "/deals",
+  title: withSuffix("Deals: Safest buys with 4★+ ratings"),
   description:
     "Top-rated products with low regret scores across the US and Canada. Curated from owner-verified satisfaction data at day 30, 60, and 90.",
-  alternates: { canonical: "/deals" },
-};
+});
 
 export default async function DealsPage() {
   let products: Product[] = [];

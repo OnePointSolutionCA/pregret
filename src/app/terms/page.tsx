@@ -1,10 +1,11 @@
 export const dynamic = "force-static";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
-export const metadata = {
-  title: "Terms",
+export const metadata = pageMeta({
+  path: "/terms",
+  title: withSuffix("Terms"),
   description: "Terms of service for Pregret, the free community rating service that tracks how buyers feel about products 30, 60 and 90 days after purchase.",
-  alternates: { canonical: "/terms" },
-};
+});
 
 export default function TermsPage() {
   return (

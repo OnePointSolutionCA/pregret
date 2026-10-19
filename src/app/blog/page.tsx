@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/data/blog";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 // Blog index is pure static data — hard-cache at the edge, no origin hits.
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Blog — Product Insights for US & Canadian Shoppers",
+export const metadata: Metadata = pageMeta({
+  path: "/blog",
+  title: withSuffix("Blog: Product Insights for US & Canadian Shoppers"),
   description:
     "Long-term satisfaction data, buyer's remorse patterns, and product regret analysis for shoppers across the United States and Canada.",
-  alternates: {
-    canonical: "/blog",
-    languages: { "en-US": "/blog", "en-CA": "/blog", "en": "/blog" },
-  },
-};
+});
 
 export default function BlogIndex() {
   const posts = getAllPosts();

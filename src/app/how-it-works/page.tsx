@@ -3,13 +3,14 @@ export const dynamic = "force-static";
 import type { Metadata } from "next";
 import Link from "next/link";
 import RegretScore from "@/components/RegretScore";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "How Pregret Works — The Regret Score Explained",
+export const metadata: Metadata = pageMeta({
+  path: "/how-it-works",
+  title: withSuffix("How Pregret Works: The Regret Score Explained"),
   description:
-    "How Pregret's Regret Score is calculated, why day-90 satisfaction matters more than launch-week reviews, and how our formula works — for shoppers across the US and Canada.",
-  alternates: { canonical: "/how-it-works" },
-};
+    "How Pregret's Regret Score is calculated, why day 90 satisfaction matters more than launch week reviews, and how the formula works for US and Canadian shoppers.",
+});
 
 export default function HowItWorksPage() {
   return (

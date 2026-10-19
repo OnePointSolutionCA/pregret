@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta, withSuffix } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
+export const metadata: Metadata = pageMeta({
+  path: "/privacy",
+  title: withSuffix("Privacy Policy"),
   description: "How Pregret collects, uses, and protects your data. Includes advertising, analytics, and cookie disclosures for US and Canadian visitors.",
-  alternates: { canonical: "/privacy" },
-};
+});
 
 export default function PrivacyPage() {
   return (

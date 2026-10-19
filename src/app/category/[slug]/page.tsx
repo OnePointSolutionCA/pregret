@@ -6,6 +6,7 @@ import SortSelect, { type SortKey } from "@/components/SortSelect";
 import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
 import { CARD_COLUMNS, unwrap } from "@/lib/db";
 import type { Product } from "@/lib/types";
+import { pageMeta, withSuffix } from "@/lib/seo";
 import {
   type Category,
   categoryFromSlug,
@@ -99,15 +100,14 @@ export async function generateMetadata({ params, searchParams }: {
   if (!cat) return { title: "Category" };
   const subLabel = sub ? subcategoryLabel(cat, sub) : null;
   const title = subLabel
-    ? `Most regretted ${subLabel.toLowerCase()} — ${cat}`
+    ? `Most regretted ${subLabel.toLowerCase()} in ${cat}`
     : `Most regretted ${cat.toLowerCase()} products`;
-  return {
-    title,
+  return pageMeta({
+    // Unknown ?sub= values render the whole category, so they canonicalize to it.
+    path: subLabel ? `/category/${slug}?sub=${encodeURIComponent(sub ?? "")}` : `/category/${slug}`,
+    title: withSuffix(title),
     description: `Owner-verified regret data for ${subLabel ? subLabel.toLowerCase() : cat.toLowerCase()} across the US and Canada. Day 30, 60, and 90 satisfaction scores.`,
-    alternates: {
-      canonical: sub ? `/category/${slug}?sub=${sub}` : `/category/${slug}`,
-    },
-  };
+  });
 }
 
 export default async function CategoryPage({ params, searchParams }: {
