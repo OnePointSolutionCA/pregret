@@ -15,8 +15,10 @@ import { GENERATED_POSTS_V2 } from "./blog-generated-v2";
 import { GENERATED_POSTS_V3 } from "./blog-generated-v3";
 import { GENERATED_POSTS_V4 } from "./blog-generated-v4";
 import { NEW_POSTS, RETIRED_SLUGS, applyPatch } from "./blog-seo-2026-10";
+import { WINTER_POSTS } from "./blog-winter-2026";
 
 const BASE_POSTS: BlogPost[] = [
+  ...WINTER_POSTS,
   ...NEW_POSTS,
   ...GENERATED_POSTS,
   ...GENERATED_POSTS_V2,
