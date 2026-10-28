@@ -147,7 +147,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Name first, about 60 characters; 150 to 160 character description (see src/lib/seo.ts).
   return pageMeta({
     path: `/product/${product.slug}`,
-    title: productTitle(product.name, product.regret_score),
+    // title_name: a short hand written name for products whose long names would cut to the same title.
+    title: productTitle(product.external_ids?.title_name ?? product.name, product.regret_score),
     description: productDescription(product.name, product.regret_score, product.would_buy_again_pct),
     image: product.image_url,
     imageAlt: product.name,
