@@ -48,7 +48,7 @@ export default function AmazonCountryCTA({
       <a
         href={href}
         target="_blank"
-        rel="noopener noreferrer sponsored"
+        rel="nofollow noopener noreferrer sponsored"
         className="inline-flex items-center justify-center gap-1 whitespace-nowrap rounded-full bg-[var(--brand-coral)] px-3 py-2 text-[11px] font-semibold text-white hover:bg-[var(--brand-coral-2)]"
       >
         <span aria-hidden>{flag}</span> See on {host}
@@ -60,7 +60,7 @@ export default function AmazonCountryCTA({
     <a
       href={href}
       target="_blank"
-      rel="noopener noreferrer sponsored"
+      rel="nofollow noopener noreferrer sponsored"
       data-magnetic
       className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-coral)] px-5 py-3 font-semibold text-white shadow-[0_10px_30px_-10px_rgba(255,107,87,0.6)] transition hover:bg-[var(--brand-coral-2)]"
     >

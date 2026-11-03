@@ -60,7 +60,7 @@ export default function AlternativeCard({ product, sourceProductSlug }: { produc
         <a
           href={`/go/${product.id}?ref=${encodeURIComponent(ref)}`}
           target="_blank"
-          rel="noopener noreferrer sponsored"
+          rel="nofollow noopener noreferrer sponsored"
           className="relative z-20 mt-auto rounded-full bg-[var(--brand-navy)] px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-[var(--brand-navy-2)]"
         >
           {cta} →

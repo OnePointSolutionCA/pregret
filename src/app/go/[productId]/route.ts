@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { serverSupabase, serviceSupabase, supabaseConfigured } from "@/lib/supabase";
-import { programFor, withAffiliateTag } from "@/lib/affiliates";
+import { publicSupabase, supabaseConfigured } from "@/lib/supabase";
+import { withAffiliateTag } from "@/lib/affiliates";
 import type { Product } from "@/lib/types";
 
 /**
@@ -27,13 +27,12 @@ export async function GET(
 ) {
   const { productId } = await params;
   const url = new URL(req.url);
-  const source = (url.searchParams.get("ref") ?? "site").slice(0, 32);
   // Explicit override via ?to=ca | ?to=us
   const explicitCountry = url.searchParams.get("to")?.toUpperCase();
 
   if (!supabaseConfigured) return NextResponse.redirect(new URL("/", req.url));
 
-  const supabase = await serverSupabase();
+  const supabase = publicSupabase();
   const { data: product } = await supabase
     .from("products")
     .select("id, amazon_url")
@@ -60,35 +59,10 @@ export async function GET(
   // -------------------------------------------------------
 
   const finalUrl = withAffiliateTag(dest);
-  const program = programFor(dest);
 
-  const { data: userData } = await supabase.auth.getUser();
-  const sessionId = req.cookies.get("pg_sid")?.value ?? crypto.randomUUID();
-
-  // Fire-and-forget log
-  try {
-    const svc = serviceSupabase();
-    await svc.from("affiliate_clicks").insert({
-      product_id: productId,
-      user_id: userData.user?.id ?? null,
-      session_id: sessionId,
-      destination_url: finalUrl,
-      affiliate_program: program,
-      source,
-    });
-  } catch {
-    // swallow — click tracking must never break the redirect
-  }
-
+  // No click logging here. Bots made nearly every hit (275k rows, 101 MB by Nov 2026, one session
+  // each), which pushed the free database over 500 MB. Amazon Associates reports real clicks.
   const res = NextResponse.redirect(finalUrl);
   res.headers.set("X-Robots-Tag", "noindex, nofollow");
-  if (!req.cookies.get("pg_sid")) {
-    res.cookies.set("pg_sid", sessionId, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 365,
-    });
-  }
   return res;
 }
