@@ -5,36 +5,60 @@ User-agent: GPTBot
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
 User-agent: CCBot
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
 User-agent: ClaudeBot
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 5
 
 User-agent: PerplexityBot
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 5
 
 User-agent: anthropic-ai
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 5
 
 User-agent: Google-Extended
 Disallow: /_next/image
 Disallow: /api/
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 
 # Bingbot and other crawlers that honour Crawl-delay — slow them down
 # so the 283k-product sitemap doesn't spike serverless invocations.
@@ -42,32 +66,64 @@ User-agent: bingbot
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 5
 
 User-agent: AhrefsBot
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
 User-agent: SemrushBot
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
 User-agent: DotBot
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
 User-agent: MJ12bot
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Crawl-delay: 10
 
+User-agent: Reflectionbot
+Disallow: /api/
+Disallow: /_next/image
+Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
+Crawl-delay: 10
+
+# Category filter and sort URLs (?sort, ?score, ?brand, ?stars) are blocked for every bot:
+# thousands of combinations, each a database query, all canonical to the plain category page.
 # All other bots (Googlebot etc.): allow indexing but block the image
 # optimizer, API, and affiliate redirects so they don't burn CPU or
 # generate fake affiliate clicks that could get the account flagged.
@@ -76,6 +132,10 @@ User-agent: *
 Disallow: /api/
 Disallow: /_next/image
 Disallow: /go/
+Disallow: /*?*sort=
+Disallow: /*?*score=
+Disallow: /*?*brand=
+Disallow: /*?*stars=
 Allow: /
 
 Sitemap: https://pregret.ca/sitemap.xml

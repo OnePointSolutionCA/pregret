@@ -161,6 +161,13 @@ export default async function CategoryPage({ params, searchParams }: {
     return `/category/${slug}${q ? `?${q}` : ""}`;
   };
 
+  // Filter and sort combinations are thousands of URLs that each run a DB query. Crawlers
+  // were walking them and timing out Supabase, so those links are nofollow (robots.txt too).
+  const linkProps = (overrides: Record<string, string | null>) => {
+    const href = buildHref(overrides);
+    return { href, rel: /[?&](sort|score|brand|stars)=/.test(href) ? "nofollow" : undefined };
+  };
+
   const activeFilterCount = [score, brandFilter, starsFilter].filter(Boolean).length;
 
   // Reusable filter panel body — used inside <details> on mobile, <aside> on desktop
@@ -169,7 +176,7 @@ export default async function CategoryPage({ params, searchParams }: {
       <div className="flex items-center justify-between">
         <h2 className="font-display text-lg font-semibold text-[var(--ink)]">Filters</h2>
         {activeFilterCount > 0 && (
-          <Link href={buildHref({ score: null, brand: null, stars: null })} className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--brand-coral)] hover:underline">
+          <Link {...linkProps({ score: null, brand: null, stars: null })} className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--brand-coral)] hover:underline">
             Clear
           </Link>
         )}
@@ -185,7 +192,7 @@ export default async function CategoryPage({ params, searchParams }: {
             return (
               <Link
                 key={k}
-                href={buildHref({ score: active ? null : k })}
+                {...linkProps({ score: active ? null : k })}
                 className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
                   active ? "bg-[var(--brand-navy)] text-white" : "text-[var(--ink-2)] hover:bg-[var(--brand-cream-2)]"
                 }`}
@@ -208,7 +215,7 @@ export default async function CategoryPage({ params, searchParams }: {
             return (
               <Link
                 key={k}
-                href={buildHref({ stars: active ? null : k })}
+                {...linkProps({ stars: active ? null : k })}
                 className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
                   active ? "bg-[var(--brand-navy)] text-white" : "text-[var(--ink-2)] hover:bg-[var(--brand-cream-2)]"
                 }`}
@@ -232,7 +239,7 @@ export default async function CategoryPage({ params, searchParams }: {
               return (
                 <Link
                   key={b}
-                  href={buildHref({ brand: active ? null : b })}
+                  {...linkProps({ brand: active ? null : b })}
                   className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
                     active ? "bg-[var(--brand-navy)] text-white" : "text-[var(--ink-2)] hover:bg-[var(--brand-cream-2)]"
                   }`}
@@ -268,7 +275,7 @@ export default async function CategoryPage({ params, searchParams }: {
         <div className="mb-5 -mx-4 overflow-x-auto px-4 sm:mb-6 sm:mx-0 sm:overflow-visible sm:px-0">
           <div className="flex flex-nowrap gap-2 sm:flex-wrap">
             <Link
-              href={buildHref({ sub: null })}
+              {...linkProps({ sub: null })}
               className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-4 py-2 text-sm transition ${
                 !sub ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white" : "border-[var(--rule)] bg-white text-[var(--ink-2)] hover:border-[var(--brand-coral)]"
               }`}
@@ -280,7 +287,7 @@ export default async function CategoryPage({ params, searchParams }: {
               return (
                 <Link
                   key={p.slug}
-                  href={buildHref({ sub: p.slug, brand: null })}
+                  {...linkProps({ sub: p.slug, brand: null })}
                   className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-4 py-2 text-sm transition ${
                     active ? "border-[var(--brand-navy)] bg-[var(--brand-navy)] text-white" : "border-[var(--rule)] bg-white text-[var(--ink-2)] hover:border-[var(--brand-coral)]"
                   }`}
@@ -321,7 +328,7 @@ export default async function CategoryPage({ params, searchParams }: {
             <p className="rounded-xl border border-dashed border-[var(--rule)] bg-white p-8 text-center text-sm text-[var(--muted)]">
               No products match these filters.{" "}
               {activeFilterCount > 0 && (
-                <Link href={buildHref({ score: null, brand: null, stars: null })} className="font-semibold text-[var(--brand-navy)] underline">
+                <Link {...linkProps({ score: null, brand: null, stars: null })} className="font-semibold text-[var(--brand-navy)] underline">
                   Clear filters
                 </Link>
               )}
