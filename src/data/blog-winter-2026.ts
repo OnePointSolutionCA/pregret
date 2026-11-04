@@ -1,9 +1,20 @@
 // Hand-written winter buying guides, 21 October 2026. Topics picked from Ahrefs Keywords Explorer
 // (Canada): "best humidifier canada" and "best snow blower canada". No prices, no invented owner
 // stats; the Health Canada humidity range was checked on canada.ca on 2026-10-21.
+// 4 November 2026: "best heated blanket" (Ahrefs CA: heated blanket 11k/mo KD 1, best heated blanket
+// 700 KD 5, electric blanket canada 300 KD 0). Certification wording from canada.ca electrical
+// product safety (updated 2026-08-12) and the JKMAX Amazon.ca warning (2026-10-22), both read 2026-11-04.
 import type { BlogPost } from "./blog";
 
 const PUBLISHED = "2026-10-21";
+const PUBLISHED_NOV4 = "2026-11-04";
+
+const ELECTRICAL_SAFETY = "https://www.canada.ca/en/health-canada/services/home-safety/electrical-products.html";
+const JKMAX_WARNING =
+  "https://recalls-rappels.canada.ca/en/alert-recall/health-canada-warns-jkmax-heated-blankets-and-heating-pads-previously-available";
+const RECALLS_DB = "https://recalls-rappels.canada.ca/en";
+const SAFE_SLEEP =
+  "https://www.canada.ca/en/health-canada/services/consumer-product-safety/reports-publications/consumer-education/creating-safe-sleep-environment-baby.html";
 
 const SPACE_HEATERS = "/blog/best-space-heaters-for-winter-2026-owner-safety-satisfaction-data";
 const WINTER_PREMIUM = "/blog/canadian-winter-product-guide-what-s-actually-worth-the-premium";
@@ -17,6 +28,79 @@ const REGRET_SCORE = "/blog/what-is-a-regret-score-and-how-does-pregret-calculat
 const HUMIDIFIER = "/blog/best-humidifier-canada-2026-which-type-to-buy";
 
 export const WINTER_POSTS: BlogPost[] = [
+  {
+    slug: "best-heated-blanket-canada-2026-what-to-check",
+    title: "Best Heated Blanket in Canada 2026: What to Check First",
+    description:
+      "Best heated blanket in Canada for 2026: throw, full size or mattress pad, the controls worth paying for, the safety mark to check and an Amazon.ca warning.",
+    publishedDate: PUBLISHED_NOV4,
+    category: "Seasonal Guides",
+    readMins: 6,
+    body: `The best heated blanket for most Canadian homes is one with a certification mark such as CSA, cUL or cETL, an automatic shut off, a controller you can unplug so the blanket can be washed, and dual controls if two people share the bed. Pick the type first: a throw for the couch, a full size blanket for the bed, or a heated mattress pad that warms you from below.
+
+A heated blanket, also called an electric blanket, is one of the cheapest ways to stay warm through a Canadian winter, because it warms you instead of the whole room. It is also an easy item to regret. The usual complaints are controllers that die after one season, uneven heat, wires you can feel through the fabric, and a blanket that cannot survive the wash. This guide skips the brand list, since models and prices on Amazon.ca change all the time. Instead, it covers what to check so any listing is easier to judge.
+
+## Which type of heated blanket should you buy?
+
+| Type | Best for | Watch out for |
+|---|---|---|
+| Heated throw | The couch, a cold home office, reading in a chair | Too small to cover a bed, short cords |
+| Heated blanket (twin to king) | Sleeping warm under your usual covers | Single controls on queen and king sizes |
+| Heated mattress pad | Warming the bed from below, people who kick off covers | Must fit your mattress depth, harder to wash |
+
+### Heated throws
+
+A throw is the easy first buy. It is small, light and useful all winter on the couch or at a desk in a drafty room. Check the cord length before you buy. A short cord means you are tied to the outlet beside the sofa, and you should not stretch it across a walkway where someone can trip on it.
+
+### Full size heated blankets
+
+A full size heated blanket goes on the bed like a regular blanket, usually under a duvet or quilt. Buy the size of your bed, not one size down, or the heated part will not reach the edges where the cold gets in. On a queen or king, look for dual controls so each side has its own setting.
+
+### Heated mattress pads
+
+A heated mattress pad goes under your fitted sheet and warms the bed from below. Many people find it more even than a blanket on top, and it stays put if you move a lot at night. Check the pocket depth against your mattress, especially a thick or pillow top one, and read the washing instructions carefully, because a pad is bulkier to clean than a blanket.
+
+## Features worth paying for
+
+- **Automatic shut off.** The blanket turns itself off after a set time. This is the single most useful safety feature, especially if you fall asleep with it on.
+- **Dual controls.** Two controllers, one for each side of the bed. People sleep at very different temperatures, and one setting rarely suits two.
+- **A detachable controller.** If the controller and cord unplug from the blanket, you can wash the blanket by following the label. A blanket you cannot wash gets thrown out early.
+- **Several heat settings and preheat.** More settings make it easier to find a level you can sleep with. A preheat mode warms the bed before you get in, then drops to a lower setting.
+- **Thin, even wiring.** Read the lower star reviews for complaints about hot spots, cold patches or wires you can feel. Those are the problems that send people back to a plain blanket.
+
+## The safety mark that matters most in Canada
+
+Health Canada says electrical products that plug into an outlet must meet Canadian safety standards and be certified by an accredited body. Its advice is to [check for a certification mark such as CSA, cUL or cETL](${ELECTRICAL_SAFETY}) before you buy, and not to buy or use a plug in product without one. Look for the mark in the listing photos, on the controller and on the label sewn into the blanket.
+
+This matters for online shopping in particular. On October 22, 2026, Health Canada [warned about JKMAX heated blankets and heating pads](${JKMAX_WARNING}) that had been sold on Amazon.ca, because their internal heating wires can overheat and pose fire and burn hazards. The products were removed from sale, and Health Canada advises anyone who has one to stop using it right away and dispose of it so it cannot be used again. Before you buy, and for any heated blanket you already own, search the model number in the [Government of Canada recalls database](${RECALLS_DB}).
+
+Health Canada's own warning signs of a fake or uncertified product are a very low price, poor quality, and spelling or grammar mistakes on the product, label or packaging. If a heated blanket listing shows all three, skip it.
+
+## How to use a heated blanket safely
+
+- **Follow the manual.** It tells you how the blanket may be used, folded, washed and stored. Heated blankets are not all the same, so do not assume.
+- **Check the cord and controller each fall.** Health Canada advises checking cords on electrical products regularly for fraying or damage. If the cord, plug or controller is damaged, stop using the blanket.
+- **Unplug it when you are not using it.** Health Canada's general advice is not to leave heat producing electrical products plugged in when they are not in use.
+- **Unplug by the plug.** Pull on the plug, not the cord.
+- **Keep it out of a baby's crib.** Health Canada's [safe sleep guidance](${SAFE_SLEEP}) is to keep a baby's sleep area free of blankets, and that includes heated ones.
+
+## When to buy a heated blanket
+
+Heated blankets sell best once the cold arrives, and they often show up in Black Friday and Boxing Day sales. If you want one for the first cold snap, buy now so you have time to test it inside the return window. If you can wait, a holiday sale can be worth it. Our guide to the [best time of year to buy anything](${BEST_TIME}) explains the pattern, and [how to return an Amazon purchase without losing money](${RETURNS}) helps if your first pick runs uneven or too cool.
+
+## Our take
+
+For most Canadian homes, a certified full size heated blanket with automatic shut off, a detachable controller and dual controls for shared beds is the low regret choice. Pick a heated throw for the couch, and a heated mattress pad if you prefer warmth from below or tend to kick off your covers.
+
+Whatever you buy, check its [Regret Score](${REGRET_SCORE}) on Pregret if it is listed, and read the reviews from people who have used it for a full winter. Controller failures usually show up after a few months, not in the first week.
+
+## More winter guides
+
+- **[Best space heaters for winter 2026](${SPACE_HEATERS})**, for warming a whole cold room.
+- **[Best humidifier in Canada 2026](${HUMIDIFIER})**, for the dry air that comes with furnace season.
+- **[Winter gear worth buying in Canada](${WINTER_GEAR})**, based on what owners actually keep.
+- **[Worst Christmas gifts of 2026](/blog/worst-christmas-gifts-2026-ranked-by-regret-score)**, if a heated blanket is on your gift list.`,
+  },
   {
     slug: "best-humidifier-canada-2026-which-type-to-buy",
     title: "Best Humidifier in Canada 2026: Which Type to Buy",
