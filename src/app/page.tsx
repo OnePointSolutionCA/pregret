@@ -211,6 +211,16 @@ export default function Home() {
         <div className="mx-auto mt-8 max-w-xl">
           <SmartSearch size="lg" />
         </div>
+        <p className="mt-6 text-sm text-[var(--ink-2)]">
+          Shopping the November sales? Read our{" "}
+          <Link
+            href="/blog/the-ultimate-2026-us-and-canada-black-friday-playbook"
+            className="font-semibold text-[var(--brand-navy)] underline underline-offset-2 hover:text-[var(--brand-coral)]"
+          >
+            Black Friday Canada 2026
+          </Link>{" "}
+          guide first.
+        </p>
       </section>
     </div>
   );
