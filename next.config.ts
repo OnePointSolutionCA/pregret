@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
         destination: "https://pregret.ca/:path*",
         permanent: true,
       },
+      // The Vercel production alias served a full copy of the site (200), and Google was finding
+      // pages through it (2026-11-06 Search Console). Exact host only, so preview deployments
+      // (pregret-<hash>.vercel.app) keep working.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "pregret.vercel.app" }],
+        destination: "https://pregret.ca/:path*",
+        permanent: true,
+      },
       // Near-duplicate merged into the Lululemon Studio Mirror comparison (see RETIRED_SLUGS
       // in src/data/blog-seo-2026-10.ts).
       {
